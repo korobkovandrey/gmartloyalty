@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-contrib/graceful"
+	"github.com/gin-contrib/gzip"
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"github.com/korobkovandrey/gmartloyalty/internal/config"
@@ -27,6 +28,7 @@ func Launch(ctx context.Context, cfg *config.Config, l *logging.ZapLogger, s *st
 	}
 	defer r.Close()
 
+	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	zapLoggerMiddleware := ginzap.GinzapWithConfig(l.Logger(), &ginzap.Config{
 		TimeFormat:   time.RFC3339,
 		UTC:          true,
@@ -35,7 +37,6 @@ func Launch(ctx context.Context, cfg *config.Config, l *logging.ZapLogger, s *st
 			return logging.GetContextFields(c)
 		},
 	})
-
 	r.Use(zapLoggerMiddleware)
 	//nolint:gocritic // ignore
 	// r.Use(ginzap.RecoveryWithZap(l.Logger(), true))
