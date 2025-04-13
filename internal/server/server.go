@@ -44,8 +44,8 @@ func Launch(ctx context.Context, cfg *config.Config, l *logging.ZapLogger, s *st
 		Secret:   cfg.JWTKey,
 		LifeTime: time.Duration(cfg.JWTLifeHours) * time.Hour,
 	}, s)
-	r.POST("/login", auth.NewLoginHandler(authService))
-	r.POST("/register", auth.NewRegisterHandler(authService))
+	r.POST("/api/user/login", auth.NewLoginHandler(authService))
+	r.POST("/api/user/register", auth.NewRegisterHandler(authService))
 
 	r.Group("/").
 		Use(middleware.UserAuthJWT([]byte(cfg.JWTKey), service.NewUserFinder(s))).
