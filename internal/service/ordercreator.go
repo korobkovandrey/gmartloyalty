@@ -19,8 +19,6 @@ type OrderCreator struct {
 	r OrderCreateStore
 }
 
-var ErrAlreadyExistsSomeUser = errors.New("already exists")
-
 func NewOrderCreator(r OrderCreateStore) *OrderCreator {
 	return &OrderCreator{r: r}
 }

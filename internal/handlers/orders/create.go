@@ -4,12 +4,12 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/korobkovandrey/gmartloyalty/internal/service"
 	"github.com/korobkovandrey/gmartloyalty/pkg/logging"
+	"github.com/korobkovandrey/gmartloyalty/pkg/luhn"
 	"go.uber.org/zap"
 )
 
@@ -36,7 +36,7 @@ func NewCreateHandler(s orderCreator) gin.HandlerFunc {
 			return
 		}
 		logging.SetGinContextFields(c, zap.String("orderNumber", orderNumber))
-		if !checkLuhn(orderNumber) {
+		if !luhn.CheckString(orderNumber) {
 			c.Status(http.StatusUnprocessableEntity)
 			return
 		}
@@ -53,28 +53,4 @@ func NewCreateHandler(s orderCreator) gin.HandlerFunc {
 		}
 		c.Status(http.StatusAccepted)
 	}
-}
-
-func checkLuhn(s string) bool {
-	number, err := strconv.Atoi(s)
-	if err != nil {
-		return false
-	}
-	var sum int
-	for i := 0; number > 0; i++ {
-		cur := number % 10
-		if i%2 == 0 {
-			sum += cur
-			number /= 10
-			continue
-		}
-		cur *= 2
-		//nolint:mnd // ignore
-		if cur > 9 {
-			cur -= 9
-		}
-		sum += cur
-		number /= 10
-	}
-	return sum%10 == 0
 }

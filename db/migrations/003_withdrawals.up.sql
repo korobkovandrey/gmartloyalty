@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS withdrawals
+(
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users ON DELETE CASCADE,
+    "order" VARCHAR(255) NOT NULL,
+    sum NUMERIC(10, 2) NOT NULL,
+    processed_at TIMESTAMP(0) NOT NULL
+);

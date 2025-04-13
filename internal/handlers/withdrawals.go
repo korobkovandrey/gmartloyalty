@@ -1,4 +1,4 @@
-package orders
+package handlers
 
 import (
 	"context"
@@ -8,11 +8,11 @@ import (
 	"github.com/korobkovandrey/gmartloyalty/internal/service"
 )
 
-type orderLister interface {
-	List(ctx context.Context, userID int64) ([]service.OrderResponse, error)
+type withdrawals interface {
+	List(ctx context.Context, userID int64) ([]service.WithdrawResponse, error)
 }
 
-func NewListHandler(s orderLister) gin.HandlerFunc {
+func NewWithdrawalsHandler(s withdrawals) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userID := c.GetInt64("userID")
 		if userID == 0 {

@@ -41,3 +41,15 @@ func NewStore(ctx context.Context, dsn string) (*Store, error) {
 func (s *Store) Close() error {
 	return s.db.Close()
 }
+
+func (s *Store) Balance(ctx context.Context, userID int64) (float64, error) {
+	a, err := s.Accrual(ctx, userID)
+	if err != nil {
+		return 0, fmt.Errorf("failed to get accrual: %w", err)
+	}
+	w, err := s.Withdrawn(ctx, userID)
+	if err != nil {
+		return 0, fmt.Errorf("failed to get withdrawn: %w", err)
+	}
+	return a - w, nil
+}

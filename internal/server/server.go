@@ -10,6 +10,7 @@ import (
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"github.com/korobkovandrey/gmartloyalty/internal/config"
+	"github.com/korobkovandrey/gmartloyalty/internal/handlers"
 	"github.com/korobkovandrey/gmartloyalty/internal/handlers/auth"
 	"github.com/korobkovandrey/gmartloyalty/internal/handlers/orders"
 	"github.com/korobkovandrey/gmartloyalty/internal/infra/store"
@@ -39,25 +40,23 @@ func Launch(ctx context.Context, cfg *config.Config, l *logging.ZapLogger, s *st
 	//nolint:gocritic // ignore
 	// r.Use(ginzap.RecoveryWithZap(l.Logger(), true))
 
-	authRoutes(r.Group("/api/user"), &service.AuthConfig{
+	authService := service.NewAuth(&service.AuthConfig{
 		Secret:   cfg.JWTKey,
 		LifeTime: time.Duration(cfg.JWTLifeHours) * time.Hour,
 	}, s)
+	r.POST("/login", auth.NewLoginHandler(authService))
+	r.POST("/register", auth.NewRegisterHandler(authService))
 
-	rAuth := r.Group("/")
-	rAuth.Use(middleware.UserAuthJWT([]byte(cfg.JWTKey), service.NewUserFinder(s)))
-
-	rAuth.POST("/api/user/orders", orders.NewCreateHandler(service.NewOrderCreator(s)))
-	rAuth.GET("/api/user/orders", orders.NewListHandler(service.NewOrderLister(s)))
+	r.Group("/").
+		Use(middleware.UserAuthJWT([]byte(cfg.JWTKey), service.NewUserFinder(s))).
+		POST("/api/user/orders", orders.NewCreateHandler(service.NewOrderCreator(s))).
+		GET("/api/user/orders", orders.NewListHandler(service.NewOrderLister(s))).
+		GET("/api/user/balance", handlers.NewBalanceHandler(service.NewBalance(s))).
+		POST("/api/user/balance/withdraw", handlers.NewWithdrawHandler(service.NewWithdraw(s))).
+		GET("/api/user/withdrawals", handlers.NewWithdrawalsHandler(service.NewWithdrawals(s)))
 
 	if err := r.RunWithContext(ctx); err != nil && !errors.Is(err, context.Canceled) {
 		return fmt.Errorf("failed to run router: %v", err)
 	}
 	return nil
-}
-
-func authRoutes(r gin.IRouter, cfg *service.AuthConfig, store service.UserAuthStore) {
-	s := service.NewAuth(cfg, store)
-	r.POST("/login", auth.NewLoginHandler(s))
-	r.POST("/register", auth.NewRegisterHandler(s))
 }

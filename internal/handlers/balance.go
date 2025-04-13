@@ -1,4 +1,4 @@
-package orders
+package handlers
 
 import (
 	"context"
@@ -8,27 +8,22 @@ import (
 	"github.com/korobkovandrey/gmartloyalty/internal/service"
 )
 
-type orderLister interface {
-	List(ctx context.Context, userID int64) ([]service.OrderResponse, error)
+type balance interface {
+	Balance(ctx context.Context, userID int64) (*service.BalanceResponse, error)
 }
 
-func NewListHandler(s orderLister) gin.HandlerFunc {
+func NewBalanceHandler(s balance) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userID := c.GetInt64("userID")
 		if userID == 0 {
 			c.Status(http.StatusUnauthorized)
 			return
 		}
-		l, err := s.List(c, userID)
+		b, err := s.Balance(c, userID)
 		if err != nil {
-			_ = c.Error(err)
 			c.Status(http.StatusInternalServerError)
 			return
 		}
-		if len(l) == 0 {
-			c.Status(http.StatusNoContent)
-			return
-		}
-		c.JSON(http.StatusOK, l)
+		c.JSON(http.StatusOK, b)
 	}
 }
