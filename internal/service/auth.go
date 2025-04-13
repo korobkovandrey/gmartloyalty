@@ -8,11 +8,13 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/jackc/pgerrcode"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/korobkovandrey/gmartloyalty/db/query"
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UserStore interface {
+type UserAuthStore interface {
 	GetUserByLogin(context.Context, string) (query.User, error)
 	CreateUser(context.Context, query.CreateUserParams) (int64, error)
 }
@@ -23,11 +25,11 @@ type AuthConfig struct {
 }
 
 type Auth struct {
-	r   UserStore
+	r   UserAuthStore
 	cfg *AuthConfig
 }
 
-func NewAuth(cfg *AuthConfig, r UserStore) *Auth {
+func NewAuth(cfg *AuthConfig, r UserAuthStore) *Auth {
 	return &Auth{r: r, cfg: cfg}
 }
 
@@ -63,6 +65,10 @@ func (s *Auth) Register(ctx context.Context, login, password string) (string, er
 		CreatedAt: time.Now().UTC(),
 	})
 	if err != nil {
+		var e *pgconn.PgError
+		if errors.As(err, &e) && pgerrcode.IsIntegrityConstraintViolation(e.Code) {
+			return "", fmt.Errorf("login %w", ErrAlreadyExists)
+		}
 		return "", fmt.Errorf("failed to create user: %w", err)
 	}
 	return s.sign(id)

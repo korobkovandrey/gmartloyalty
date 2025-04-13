@@ -5,8 +5,63 @@
 package query
 
 import (
+	"database/sql/driver"
+	"fmt"
 	"time"
 )
+
+type TOrderStatus string
+
+const (
+	TOrderStatusNEW        TOrderStatus = "NEW"
+	TOrderStatusPROCESSING TOrderStatus = "PROCESSING"
+	TOrderStatusINVALID    TOrderStatus = "INVALID"
+	TOrderStatusPROCESSED  TOrderStatus = "PROCESSED"
+)
+
+func (e *TOrderStatus) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = TOrderStatus(s)
+	case string:
+		*e = TOrderStatus(s)
+	default:
+		return fmt.Errorf("unsupported scan type for TOrderStatus: %T", src)
+	}
+	return nil
+}
+
+type NullTOrderStatus struct {
+	TOrderStatus TOrderStatus
+	Valid        bool // Valid is true if TOrderStatus is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullTOrderStatus) Scan(value interface{}) error {
+	if value == nil {
+		ns.TOrderStatus, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.TOrderStatus.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullTOrderStatus) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.TOrderStatus), nil
+}
+
+type Order struct {
+	ID         int64
+	UserID     int64
+	Number     string
+	Status     TOrderStatus
+	Accrual    float64
+	UploadedAt time.Time
+}
 
 type User struct {
 	ID        int64

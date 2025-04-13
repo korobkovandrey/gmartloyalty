@@ -3,9 +3,12 @@ module github.com/korobkovandrey/gmartloyalty
 go 1.23.7
 
 require (
+	github.com/gin-contrib/graceful v1.1.2
+	github.com/gin-contrib/zap v1.1.5
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/golang-migrate/migrate/v4 v4.18.2
+	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/jackc/pgx/v5 v5.7.4
 	github.com/joho/godotenv v1.5.1
 	github.com/spf13/pflag v1.0.6
@@ -20,9 +23,7 @@ require (
 	github.com/cloudwego/base64x v0.1.5 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
-	github.com/gin-contrib/graceful v1.1.2 // indirect
 	github.com/gin-contrib/sse v1.0.0 // indirect
-	github.com/gin-contrib/zap v1.1.5 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.26.0 // indirect

@@ -1,5 +1,5 @@
 //nolint:dupl // ignore
-package handlers
+package auth
 
 import (
 	"context"

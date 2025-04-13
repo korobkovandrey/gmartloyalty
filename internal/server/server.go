@@ -4,14 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"time"
 
 	"github.com/gin-contrib/graceful"
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"github.com/korobkovandrey/gmartloyalty/internal/config"
-	"github.com/korobkovandrey/gmartloyalty/internal/handlers"
+	"github.com/korobkovandrey/gmartloyalty/internal/handlers/auth"
+	"github.com/korobkovandrey/gmartloyalty/internal/handlers/orders"
 	"github.com/korobkovandrey/gmartloyalty/internal/infra/store"
 	"github.com/korobkovandrey/gmartloyalty/internal/middleware"
 	"github.com/korobkovandrey/gmartloyalty/internal/service"
@@ -45,12 +45,10 @@ func Launch(ctx context.Context, cfg *config.Config, l *logging.ZapLogger, s *st
 	}, s)
 
 	rAuth := r.Group("/")
-	rAuth.Use(middleware.UserAuthJWT([]byte(cfg.JWTKey)))
-	rAuth.GET("/asd", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
+	rAuth.Use(middleware.UserAuthJWT([]byte(cfg.JWTKey), service.NewUserFinder(s)))
+
+	rAuth.POST("/api/user/orders", orders.NewCreateHandler(service.NewOrderCreator(s)))
+	rAuth.GET("/api/user/orders", orders.NewListHandler(service.NewOrderLister(s)))
 
 	if err := r.RunWithContext(ctx); err != nil && !errors.Is(err, context.Canceled) {
 		return fmt.Errorf("failed to run router: %v", err)
@@ -58,8 +56,8 @@ func Launch(ctx context.Context, cfg *config.Config, l *logging.ZapLogger, s *st
 	return nil
 }
 
-func authRoutes(r gin.IRouter, cfg *service.AuthConfig, store service.UserStore) {
+func authRoutes(r gin.IRouter, cfg *service.AuthConfig, store service.UserAuthStore) {
 	s := service.NewAuth(cfg, store)
-	r.POST("/login", handlers.NewLoginHandler(s))
-	r.POST("/register", handlers.NewRegisterHandler(s))
+	r.POST("/login", auth.NewLoginHandler(s))
+	r.POST("/register", auth.NewRegisterHandler(s))
 }

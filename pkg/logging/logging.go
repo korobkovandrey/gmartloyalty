@@ -51,7 +51,7 @@ func (z *ZapLogger) Sync() {
 }
 
 func SetGinContextFields(ctx *gin.Context, fields ...zap.Field) {
-	ctxFields, _ := ctx.Value(zapFieldsKey).(ZapFields)
+	ctxFields, _ := ctx.Value(string(zapFieldsKey)).(ZapFields)
 	if ctxFields == nil {
 		ctxFields = make(ZapFields)
 	}
