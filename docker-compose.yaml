@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:17.4-alpine
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U gophermart -d gophermart" ]
+      test: [ "CMD-SHELL", "pg_isready -U gmartloyalty -d gmartloyalty" ]
       interval: 10s
       retries: 5
       start_period: 30s
@@ -13,7 +13,7 @@ services:
       POSTGRES_PASSWORD: "P@ssw0rd"
       PGDATA: "/var/lib/postgresql/data"
     volumes:
-      - "./db-init:/docker-entrypoint-initdb.d"
+      - "./db/init:/docker-entrypoint-initdb.d"
       - "pgdata:/var/lib/postgresql/data"
     ports:
       - "${DB_PORT_EXTERNAL:-5432}:5432"

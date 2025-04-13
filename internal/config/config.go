@@ -14,6 +14,8 @@ type Config struct {
 	RunAddress           string   `mapstructure:"run_address"`
 	DatabaseURI          string   `mapstructure:"database_uri"`
 	AccrualSystemAddress string   `mapstructure:"accrual_system_address"`
+	JWTKey               string   `mapstructure:"jwt_key"`
+	JWTLifeHours         int16    `mapstructure:"jwt_life_hours"`
 	LogLevel             int8     `mapstructure:"log_level"`
 	LogOutput            []string `mapstructure:"log_output"`
 }
@@ -26,6 +28,8 @@ func NewConfig() (cfg *Config, err error) {
 		RunAddress:           ":8090",
 		DatabaseURI:          "",
 		AccrualSystemAddress: "http://localhost:8080",
+		JWTKey:               "secret",
+		JWTLifeHours:         24,
 		LogLevel:             -1,
 		LogOutput:            []string{"stderr"},
 	}
@@ -36,6 +40,14 @@ func NewConfig() (cfg *Config, err error) {
 	conf.SetDefault("database_uri", cfg.DatabaseURI)
 	pflag.String("d", cfg.DatabaseURI, "URI to database")
 	_ = conf.BindPFlag("database_uri", pflag.Lookup("d"))
+
+	conf.SetDefault("jwt_key", cfg.JWTKey)
+	pflag.String("j", cfg.JWTKey, "JWT secret key")
+	_ = conf.BindPFlag("jwt_key", pflag.Lookup("j"))
+
+	conf.SetDefault("jwt_life_hours", cfg.JWTLifeHours)
+	pflag.Int16("h", cfg.JWTLifeHours, "JWT life hours")
+	_ = conf.BindPFlag("jwt_life_hours", pflag.Lookup("h"))
 
 	conf.SetDefault("log_level", cfg.LogLevel)
 	pflag.Int8("log-level", cfg.LogLevel, "log level: -1 debug, 0 info, 1 warn, 2 error, 3 dPanic, 4 panic, 5 fatal")
@@ -57,6 +69,9 @@ func NewConfig() (cfg *Config, err error) {
 	}
 	if cfg.DatabaseURI == "" {
 		return nil, errors.New("database URI is empty")
+	}
+	if cfg.JWTKey == "" {
+		return nil, errors.New("JWT key is empty")
 	}
 	return cfg, nil
 }

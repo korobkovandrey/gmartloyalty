@@ -1,5 +1,5 @@
 CREATE USER gmartloyalty
-    PASSWORD 'gm@rt!Oy$l&y';
+    PASSWORD 'gm@rt!Oyl&y';
 
 CREATE DATABASE "gmartloyalty"
     OWNER "gmartloyalty"

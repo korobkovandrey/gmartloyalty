@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -45,21 +46,21 @@ func NewZapLogger(level zapcore.Level, outputPaths []string) (*ZapLogger, error)
 	}, nil
 }
 
-func (z *ZapLogger) WithContextFields(ctx context.Context, fields ...zap.Field) context.Context {
-	ctxFields, _ := ctx.Value(zapFieldsKey).(ZapFields)
-	if ctxFields == nil {
-		ctxFields = make(ZapFields)
-	}
-	return context.WithValue(ctx, zapFieldsKey, ctxFields.Append(fields...))
-}
-
 func (z *ZapLogger) Sync() {
 	_ = z.logger.Sync()
 }
 
-func (z *ZapLogger) withCtxFields(ctx context.Context, fields ...zap.Field) []zap.Field {
+func SetGinContextFields(ctx *gin.Context, fields ...zap.Field) {
+	ctxFields, _ := ctx.Value(zapFieldsKey).(ZapFields)
+	if ctxFields == nil {
+		ctxFields = make(ZapFields)
+	}
+	ctx.Set(string(zapFieldsKey), ctxFields.Append(fields...))
+}
+
+func GetContextFields(ctx context.Context, fields ...zap.Field) []zap.Field {
 	fs := make(ZapFields)
-	ctxFields, ok := ctx.Value(zapFieldsKey).(ZapFields)
+	ctxFields, ok := ctx.Value(string(zapFieldsKey)).(ZapFields)
 	if ok {
 		fs = ctxFields
 	}
@@ -74,27 +75,27 @@ func (z *ZapLogger) withCtxFields(ctx context.Context, fields ...zap.Field) []za
 }
 
 func (z *ZapLogger) InfoCtx(ctx context.Context, msg string, fields ...zap.Field) {
-	z.logger.Info(msg, z.withCtxFields(ctx, fields...)...)
+	z.logger.Info(msg, GetContextFields(ctx, fields...)...)
 }
 
 func (z *ZapLogger) DebugCtx(ctx context.Context, msg string, fields ...zap.Field) {
-	z.logger.Debug(msg, z.withCtxFields(ctx, fields...)...)
+	z.logger.Debug(msg, GetContextFields(ctx, fields...)...)
 }
 
 func (z *ZapLogger) WarnCtx(ctx context.Context, msg string, fields ...zap.Field) {
-	z.logger.Warn(msg, z.withCtxFields(ctx, fields...)...)
+	z.logger.Warn(msg, GetContextFields(ctx, fields...)...)
 }
 
 func (z *ZapLogger) ErrorCtx(ctx context.Context, msg string, fields ...zap.Field) {
-	z.logger.Error(msg, z.withCtxFields(ctx, fields...)...)
+	z.logger.Error(msg, GetContextFields(ctx, fields...)...)
 }
 
 func (z *ZapLogger) FatalCtx(ctx context.Context, msg string, fields ...zap.Field) {
-	z.logger.Fatal(msg, z.withCtxFields(ctx, fields...)...)
+	z.logger.Fatal(msg, GetContextFields(ctx, fields...)...)
 }
 
 func (z *ZapLogger) PanicCtx(ctx context.Context, msg string, fields ...zap.Field) {
-	z.logger.Panic(msg, z.withCtxFields(ctx, fields...)...)
+	z.logger.Panic(msg, GetContextFields(ctx, fields...)...)
 }
 
 func (z *ZapLogger) SetLevel(level zapcore.Level) {
