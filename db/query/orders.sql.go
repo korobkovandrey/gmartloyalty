@@ -29,6 +29,24 @@ func (q *Queries) CreateOrder(ctx context.Context, arg CreateOrderParams) (int64
 	return id, err
 }
 
+const getOrderByID = `-- name: GetOrderByID :one
+SELECT id, user_id, number, status, accrual, uploaded_at FROM orders WHERE id=$1 LIMIT 1
+`
+
+func (q *Queries) GetOrderByID(ctx context.Context, id int64) (Order, error) {
+	row := q.db.QueryRowContext(ctx, getOrderByID, id)
+	var i Order
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.Number,
+		&i.Status,
+		&i.Accrual,
+		&i.UploadedAt,
+	)
+	return i, err
+}
+
 const getOrderByNumber = `-- name: GetOrderByNumber :one
 SELECT id, user_id, number, status, accrual, uploaded_at FROM orders WHERE number=$1 LIMIT 1
 `
@@ -79,4 +97,67 @@ func (q *Queries) GetOrdersForUserID(ctx context.Context, userID int64) ([]Order
 		return nil, err
 	}
 	return items, nil
+}
+
+const getOrdersNotProcessed = `-- name: GetOrdersNotProcessed :many
+SELECT id, user_id, number, status, accrual, uploaded_at FROM orders WHERE status NOT IN ('PROCESSED', 'INVALID') ORDER BY uploaded_at
+`
+
+func (q *Queries) GetOrdersNotProcessed(ctx context.Context) ([]Order, error) {
+	rows, err := q.db.QueryContext(ctx, getOrdersNotProcessed)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Order
+	for rows.Next() {
+		var i Order
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.Number,
+			&i.Status,
+			&i.Accrual,
+			&i.UploadedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const setOrderStatus = `-- name: SetOrderStatus :exec
+UPDATE orders SET status=$1 WHERE id=$2
+`
+
+type SetOrderStatusParams struct {
+	Status TOrderStatus
+	ID     int64
+}
+
+func (q *Queries) SetOrderStatus(ctx context.Context, arg SetOrderStatusParams) error {
+	_, err := q.db.ExecContext(ctx, setOrderStatus, arg.Status, arg.ID)
+	return err
+}
+
+const setOrderStatusAndAccrual = `-- name: SetOrderStatusAndAccrual :exec
+UPDATE orders SET status=$1, accrual=$2 WHERE id=$3
+`
+
+type SetOrderStatusAndAccrualParams struct {
+	Status  TOrderStatus
+	Accrual float64
+	ID      int64
+}
+
+func (q *Queries) SetOrderStatusAndAccrual(ctx context.Context, arg SetOrderStatusAndAccrualParams) error {
+	_, err := q.db.ExecContext(ctx, setOrderStatusAndAccrual, arg.Status, arg.Accrual, arg.ID)
+	return err
 }

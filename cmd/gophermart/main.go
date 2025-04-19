@@ -6,9 +6,12 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"runtime"
 	"syscall"
+	"time"
 
 	"github.com/joho/godotenv"
+	"github.com/korobkovandrey/gmartloyalty/internal/accrual"
 	"github.com/korobkovandrey/gmartloyalty/internal/config"
 	"github.com/korobkovandrey/gmartloyalty/internal/infra/store"
 	"github.com/korobkovandrey/gmartloyalty/internal/server"
@@ -42,7 +45,29 @@ func main() {
 		}
 	}()
 
-	if err := server.Launch(ctx, cfg, l, s); err != nil {
+	a := accrual.NewAccrual(l, s, &accrual.Config{
+		AccrualSystemAddress: cfg.AccrualSystemAddress,
+		JobsSize:             100,
+		DeferJobsSize:        100,
+		NumWorkers:           runtime.NumCPU(),
+		MaxAttempts:          5,
+		AttemptTimeout:       10 * time.Second,
+	})
+	wg := a.Run(ctx)
+	defer func() {
+		a.Close()
+		wg.Wait()
+	}()
+
+	notProcessedOrders, err := s.GetOrdersNotProcessed(ctx)
+	if err != nil {
+		l.FatalCtx(ctx, fmt.Errorf("failed to get orders: %v", err).Error())
+	}
+	for _, o := range notProcessedOrders {
+		a.PushOrder(o.Number)
+	}
+
+	if err := server.Launch(ctx, cfg, l, s, a); err != nil {
 		l.FatalCtx(ctx, fmt.Errorf("failed to launch server: %v", err).Error())
 	}
 }

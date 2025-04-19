@@ -17,7 +17,11 @@ type orderCreator interface {
 	Push(ctx context.Context, userID int64, orderNumber string) error
 }
 
-func NewCreateHandler(s orderCreator) gin.HandlerFunc {
+type AccrualPusher interface {
+	PushOrder(orderNum string)
+}
+
+func NewCreateHandler(s orderCreator, a AccrualPusher) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userID := c.GetInt64("userID")
 		if userID == 0 {
@@ -51,6 +55,7 @@ func NewCreateHandler(s orderCreator) gin.HandlerFunc {
 			}
 			return
 		}
+		a.PushOrder(orderNumber)
 		c.Status(http.StatusAccepted)
 	}
 }
