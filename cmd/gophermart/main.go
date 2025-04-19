@@ -45,16 +45,14 @@ func main() {
 		}
 	}()
 
-	accrualCfg := &accrual.Config{
+	a := accrual.NewAccrual(l, s, &accrual.Config{
 		AccrualSystemAddress: cfg.AccrualSystemAddress,
 		JobsSize:             100,
 		DeferJobsSize:        100,
 		NumWorkers:           runtime.NumCPU(),
 		MaxAttempts:          3,
 		AttemptTimeout:       3 * time.Second,
-	}
-	l.InfoCtx(ctx, "", zap.Any("accrual config", accrualCfg))
-	a := accrual.NewAccrual(l, s, accrualCfg)
+	})
 	wg := a.Run(ctx)
 	defer func() {
 		a.Close()

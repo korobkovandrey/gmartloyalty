@@ -153,7 +153,6 @@ func (s *Accrual) worker(ctx context.Context) {
 				s.pushDeferredJob(j)
 				continue
 			}
-			s.l.InfoCtx(ctx, fmt.Sprintf("order %s processed", order.Number))
 		} else if j.attempt < s.cfg.MaxAttempts {
 			s.pushDeferredJob(j)
 		} else {
@@ -164,7 +163,7 @@ func (s *Accrual) worker(ctx context.Context) {
 				s.l.ErrorCtx(ctx, fmt.Errorf("failed to set order status: %w", err).Error())
 				continue
 			}
-			s.l.InfoCtx(ctx, fmt.Sprintf("order %s invalid", order.Number))
+			s.l.WarnCtx(ctx, fmt.Sprintf("max attempts reached for order %s", order.Number))
 		}
 	}
 }
