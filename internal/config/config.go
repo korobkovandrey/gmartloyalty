@@ -41,6 +41,10 @@ func NewConfig() (cfg *Config, err error) {
 	pflag.String("d", cfg.DatabaseURI, "URI to database")
 	_ = conf.BindPFlag("database_uri", pflag.Lookup("d"))
 
+	conf.SetDefault("accrual_system_address", cfg.DatabaseURI)
+	pflag.String("r", cfg.AccrualSystemAddress, "accrual system address")
+	_ = conf.BindPFlag("accrual_system_address", pflag.Lookup("r"))
+
 	conf.SetDefault("jwt_key", cfg.JWTKey)
 	pflag.String("j", cfg.JWTKey, "JWT secret key")
 	_ = conf.BindPFlag("jwt_key", pflag.Lookup("j"))
