@@ -26,6 +26,7 @@ func NewListHandler(s orderLister) gin.HandlerFunc {
 			return
 		}
 		if len(l) == 0 {
+			c.Header("Content-Type", "application/json")
 			c.Status(http.StatusNoContent)
 			return
 		}

@@ -26,6 +26,7 @@ func NewWithdrawalsHandler(s withdrawals) gin.HandlerFunc {
 			return
 		}
 		if len(l) == 0 {
+			c.Header("Content-Type", "application/json")
 			c.Status(http.StatusNoContent)
 			return
 		}
