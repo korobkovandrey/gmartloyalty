@@ -13,7 +13,6 @@ import (
 )
 
 type orderStore interface {
-	GetOrdersNotProcessed(ctx context.Context) ([]query.Order, error)
 	GetOrderByNumber(ctx context.Context, number string) (query.Order, error)
 	SetOrderStatus(ctx context.Context, arg query.SetOrderStatusParams) error
 	SetOrderStatusAndAccrual(ctx context.Context, arg query.SetOrderStatusAndAccrualParams) error
