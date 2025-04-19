@@ -149,6 +149,7 @@ func (s *Accrual) worker(ctx context.Context) {
 				Status:  query.TOrderStatus(resp.Status),
 				Accrual: resp.Accrual,
 			}); err != nil {
+				s.l.ErrorCtx(ctx, fmt.Errorf("failed to set order status and accrual: %w", err).Error())
 				s.pushDeferredJob(j)
 				continue
 			}
