@@ -55,7 +55,7 @@ func NewCreateHandler(s orderCreator, a AccrualPusher) gin.HandlerFunc {
 			}
 			return
 		}
-		a.PushOrder(orderNumber)
+		go a.PushOrder(orderNumber)
 		c.Status(http.StatusAccepted)
 	}
 }

@@ -51,7 +51,7 @@ func main() {
 		DeferJobsSize:        100,
 		NumWorkers:           runtime.NumCPU(),
 		MaxAttempts:          3,
-		AttemptTimeout:       5 * time.Second,
+		AttemptTimeout:       3 * time.Second,
 	})
 	wg := a.Run(ctx)
 	defer func() {
