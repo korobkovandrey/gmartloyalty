@@ -53,11 +53,8 @@ func main() {
 		MaxAttempts:          3,
 		AttemptTimeout:       3 * time.Second,
 	})
-	wg := a.Run(ctx)
-	defer func() {
-		a.Close()
-		wg.Wait()
-	}()
+	a.Run(ctx)
+	defer a.Close()
 
 	notProcessedOrders, err := s.GetOrdersNotProcessed(ctx)
 	if err != nil {

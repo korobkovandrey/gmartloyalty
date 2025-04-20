@@ -41,6 +41,7 @@ type Accrual struct {
 	c           *client
 	waitCh      chan struct{}
 	waitMux     sync.RWMutex
+	wg          sync.WaitGroup
 }
 
 func NewAccrual(l *logging.ZapLogger, r orderStore, cfg *Config) *Accrual {
@@ -57,9 +58,8 @@ func NewAccrual(l *logging.ZapLogger, r orderStore, cfg *Config) *Accrual {
 	}
 }
 
-func (s *Accrual) Run(ctx context.Context) *sync.WaitGroup {
-	wg := &sync.WaitGroup{}
-	wg.Add(s.cfg.NumWorkers + 1)
+func (s *Accrual) Run(ctx context.Context) {
+	s.wg.Add(s.cfg.NumWorkers + 1)
 	go func() {
 		for j := range s.deferJobsCh {
 			if ctx.Err() != nil {
@@ -67,15 +67,14 @@ func (s *Accrual) Run(ctx context.Context) *sync.WaitGroup {
 			}
 			s.pushJob(j)
 		}
-		wg.Done()
+		s.wg.Done()
 	}()
 	for i := 0; i < s.cfg.NumWorkers; i++ {
 		go func() {
 			s.worker(ctx)
-			wg.Done()
+			s.wg.Done()
 		}()
 	}
-	return wg
 }
 
 func (s *Accrual) PushOrder(orderNum string) {
@@ -197,4 +196,5 @@ func (s *Accrual) Close() {
 	close(s.deferJobsCh)
 	close(s.jobsCh)
 	s.c.close()
+	s.wg.Wait()
 }
