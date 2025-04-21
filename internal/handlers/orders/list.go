@@ -9,6 +9,7 @@ import (
 )
 
 //go:generate mockgen -source=list.go -destination=mocks/mock_orderlister.go -package=mocks
+
 type orderLister interface {
 	List(ctx context.Context, userID int64) ([]service.OrderResponse, error)
 }
