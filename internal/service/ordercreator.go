@@ -10,6 +10,8 @@ import (
 	"github.com/korobkovandrey/gmartloyalty/db/query"
 )
 
+//go:generate mockgen -source=ordercreator.go -destination=mocks/mock_ordercreatestore.go -package=mocks
+
 type OrderCreateStore interface {
 	GetOrderByNumber(ctx context.Context, number string) (query.Order, error)
 	CreateOrder(ctx context.Context, arg query.CreateOrderParams) (int64, error)

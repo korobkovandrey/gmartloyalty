@@ -8,6 +8,8 @@ import (
 	"github.com/korobkovandrey/gmartloyalty/db/query"
 )
 
+//go:generate mockgen -source=orderlister.go -destination=mocks/mock_orderliststore.go -package=mocks
+
 type OrderListStore interface {
 	GetOrdersForUserID(ctx context.Context, userID int64) ([]query.Order, error)
 }

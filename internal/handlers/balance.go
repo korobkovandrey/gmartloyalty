@@ -8,6 +8,8 @@ import (
 	"github.com/korobkovandrey/gmartloyalty/internal/service"
 )
 
+//go:generate mockgen -source=balance.go -destination=mocks/mock_balance.go -package=mocks
+
 type balance interface {
 	Balance(ctx context.Context, userID int64) (*service.BalanceResponse, error)
 }

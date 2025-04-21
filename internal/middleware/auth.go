@@ -15,6 +15,8 @@ import (
 	"go.uber.org/zap"
 )
 
+//go:generate mockgen -source=auth.go -destination=mocks/mock_auth.go -package=mocks
+
 type finder interface {
 	Find(context.Context, int64) (*query.User, error)
 }

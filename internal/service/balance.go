@@ -5,6 +5,8 @@ import (
 	"fmt"
 )
 
+//go:generate mockgen -source=balance.go -destination=mocks/mock_balancestore.go -package=mocks
+
 type BalanceStore interface {
 	Accrual(ctx context.Context, userID int64) (float64, error)
 	Withdrawn(ctx context.Context, userID int64) (float64, error)

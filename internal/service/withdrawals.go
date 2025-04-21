@@ -8,6 +8,8 @@ import (
 	"github.com/korobkovandrey/gmartloyalty/db/query"
 )
 
+//go:generate mockgen -source=withdrawals.go -destination=mocks/mock_withdrawalsstore.go -package=mocks
+
 type WithdrawalsStore interface {
 	GetWithdrawalsForUserID(ctx context.Context, userID int64) ([]query.Withdrawal, error)
 }

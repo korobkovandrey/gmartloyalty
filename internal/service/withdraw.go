@@ -8,6 +8,8 @@ import (
 	"github.com/korobkovandrey/gmartloyalty/db/query"
 )
 
+//go:generate mockgen -source=withdraw.go -destination=mocks/mock_withdrawstore.go -package=mocks
+
 type WithdrawStore interface {
 	Balance(ctx context.Context, userID int64) (float64, error)
 	CreateWithdraw(ctx context.Context, arg query.CreateWithdrawParams) (int64, error)

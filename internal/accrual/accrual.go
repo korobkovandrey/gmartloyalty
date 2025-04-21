@@ -12,6 +12,8 @@ import (
 	"github.com/korobkovandrey/gmartloyalty/pkg/logging"
 )
 
+//go:generate mockgen -source=accrual.go -destination=mocks/mock_orderstore.go -package=mocks
+
 type orderStore interface {
 	GetOrderByNumber(ctx context.Context, number string) (query.Order, error)
 	SetOrderStatus(ctx context.Context, arg query.SetOrderStatusParams) error

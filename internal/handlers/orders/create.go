@@ -13,6 +13,7 @@ import (
 	"go.uber.org/zap"
 )
 
+//go:generate mockgen -source=create.go -destination=mocks/mock_ordercreator.go -package=mocks
 type orderCreator interface {
 	Push(ctx context.Context, userID int64, orderNumber string) error
 }

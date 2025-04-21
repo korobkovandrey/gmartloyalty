@@ -12,6 +12,8 @@ import (
 	"go.uber.org/zap"
 )
 
+//go:generate mockgen -source=register.go -destination=mocks/mock_registerservice.go -package=mocks
+
 type registerService interface {
 	Register(ctx context.Context, login, password string) (string, error)
 }

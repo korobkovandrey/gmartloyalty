@@ -9,6 +9,8 @@ import (
 	"github.com/korobkovandrey/gmartloyalty/db/query"
 )
 
+//go:generate mockgen -source=user.go -destination=mocks/mock_userfinderstore.go -package=mocks
+
 type UserFinderStore interface {
 	GetUserById(context.Context, int64) (query.User, error)
 }

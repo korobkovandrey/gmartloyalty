@@ -8,6 +8,8 @@ import (
 	"github.com/korobkovandrey/gmartloyalty/internal/service"
 )
 
+//go:generate mockgen -source=withdrawals.go -destination=mocks/mock_withdrawals.go -package=mocks
+
 type withdrawals interface {
 	List(ctx context.Context, userID int64) ([]service.WithdrawResponse, error)
 }

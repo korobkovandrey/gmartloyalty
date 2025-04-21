@@ -10,6 +10,8 @@ import (
 	"github.com/korobkovandrey/gmartloyalty/pkg/luhn"
 )
 
+//go:generate mockgen -source=withdraw.go -destination=mocks/mock_withdraw.go -package=mocks
+
 type withdraw interface {
 	Create(ctx context.Context, userID int64, order string, sum float64) error
 }

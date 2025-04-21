@@ -14,6 +14,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+//go:generate mockgen -source=auth.go -destination=mocks/mock_userauthstore.go -package=mocks
+
 type UserAuthStore interface {
 	GetUserByLogin(context.Context, string) (query.User, error)
 	CreateUser(context.Context, query.CreateUserParams) (int64, error)
