@@ -3,6 +3,7 @@ package dbtest
 import (
 	"context"
 	"database/sql"
+	"strconv"
 	"testing"
 	"time"
 
@@ -34,12 +35,12 @@ func SeedUsers(t *testing.T, db *sql.DB) {
 	_, err = db.ExecContext(ctx, `
 		INSERT INTO users(id, login, password, created_at, updated_at)
 		VALUES
-			($1, $2, $3, $4, $4);`, UserID1, "user"+string(rune(UserID1)), string(bytes), time.Now())
+			($1, $2, $3, $4, $4);`, UserID1, "user"+strconv.Itoa(UserID1), string(bytes), time.Now())
 	require.NoError(t, err)
 	_, err = db.ExecContext(ctx, `
 		INSERT INTO users(id, login, password, created_at, updated_at)
 		VALUES
-			($1, $2, $3, $4, $4);`, UserID2, "user"+string(rune(UserID2)), string(bytes), time.Now())
+			($1, $2, $3, $4, $4);`, UserID2, "user"+strconv.Itoa(UserID2), string(bytes), time.Now())
 	require.NoError(t, err)
 }
 

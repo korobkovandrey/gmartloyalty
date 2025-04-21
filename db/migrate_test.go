@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMigrate(t *testing.T) {
+func TestDB_MigrateIntegration(t *testing.T) {
 	dsn, resource, pool := dbtest.MakeDockerPoolDB(t)
 	defer func() {
 		assert.NoError(t, resource.Close())

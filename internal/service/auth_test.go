@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"strings"
 	"testing"
 	"time"
 
@@ -269,5 +270,10 @@ func Test_makePasswordHash(t *testing.T) {
 		assert.NotEmpty(t, hash)
 		err = bcrypt.CompareHashAndPassword([]byte(hash), []byte(""))
 		assert.NoError(t, err)
+	})
+
+	t.Run("long password", func(t *testing.T) {
+		_, err := makePasswordHash(strings.Repeat("a", 100))
+		require.Error(t, err)
 	})
 }

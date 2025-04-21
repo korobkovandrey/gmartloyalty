@@ -1,0 +1,1989 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>gophermart: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/korobkovandrey/gmartloyalty/cmd/gophermart/main.go (0.0%)</option>
+				
+				<option value="file1">github.com/korobkovandrey/gmartloyalty/db/migrate.go (70.0%)</option>
+				
+				<option value="file2">github.com/korobkovandrey/gmartloyalty/db/query/balance.sql.go (100.0%)</option>
+				
+				<option value="file3">github.com/korobkovandrey/gmartloyalty/db/query/db.go (50.0%)</option>
+				
+				<option value="file4">github.com/korobkovandrey/gmartloyalty/db/query/models.go (100.0%)</option>
+				
+				<option value="file5">github.com/korobkovandrey/gmartloyalty/db/query/orders.sql.go (87.0%)</option>
+				
+				<option value="file6">github.com/korobkovandrey/gmartloyalty/db/query/users.sql.go (100.0%)</option>
+				
+				<option value="file7">github.com/korobkovandrey/gmartloyalty/db/query/withdrawals.sql.go (84.2%)</option>
+				
+				<option value="file8">github.com/korobkovandrey/gmartloyalty/internal/accrual/accrual.go (60.3%)</option>
+				
+				<option value="file9">github.com/korobkovandrey/gmartloyalty/internal/accrual/client.go (100.0%)</option>
+				
+				<option value="file10">github.com/korobkovandrey/gmartloyalty/internal/config/config.go (86.5%)</option>
+				
+				<option value="file11">github.com/korobkovandrey/gmartloyalty/internal/handlers/auth/login.go (100.0%)</option>
+				
+				<option value="file12">github.com/korobkovandrey/gmartloyalty/internal/handlers/auth/register.go (100.0%)</option>
+				
+				<option value="file13">github.com/korobkovandrey/gmartloyalty/internal/handlers/balance.go (100.0%)</option>
+				
+				<option value="file14">github.com/korobkovandrey/gmartloyalty/internal/handlers/orders/create.go (89.3%)</option>
+				
+				<option value="file15">github.com/korobkovandrey/gmartloyalty/internal/handlers/orders/list.go (100.0%)</option>
+				
+				<option value="file16">github.com/korobkovandrey/gmartloyalty/internal/handlers/withdraw.go (100.0%)</option>
+				
+				<option value="file17">github.com/korobkovandrey/gmartloyalty/internal/handlers/withdrawals.go (100.0%)</option>
+				
+				<option value="file18">github.com/korobkovandrey/gmartloyalty/internal/infra/store/store.go (91.7%)</option>
+				
+				<option value="file19">github.com/korobkovandrey/gmartloyalty/internal/middleware/auth.go (87.1%)</option>
+				
+				<option value="file20">github.com/korobkovandrey/gmartloyalty/internal/server/server.go (25.0%)</option>
+				
+				<option value="file21">github.com/korobkovandrey/gmartloyalty/internal/service/auth.go (94.4%)</option>
+				
+				<option value="file22">github.com/korobkovandrey/gmartloyalty/internal/service/balance.go (100.0%)</option>
+				
+				<option value="file23">github.com/korobkovandrey/gmartloyalty/internal/service/ordercreator.go (100.0%)</option>
+				
+				<option value="file24">github.com/korobkovandrey/gmartloyalty/internal/service/orderlister.go (100.0%)</option>
+				
+				<option value="file25">github.com/korobkovandrey/gmartloyalty/internal/service/user.go (100.0%)</option>
+				
+				<option value="file26">github.com/korobkovandrey/gmartloyalty/internal/service/withdraw.go (100.0%)</option>
+				
+				<option value="file27">github.com/korobkovandrey/gmartloyalty/internal/service/withdrawals.go (100.0%)</option>
+				
+				<option value="file28">github.com/korobkovandrey/gmartloyalty/pkg/luhn/check.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package main
+
+import (
+        "context"
+        "fmt"
+        "log"
+        "os"
+        "os/signal"
+        "runtime"
+        "syscall"
+        "time"
+
+        "github.com/joho/godotenv"
+        "github.com/korobkovandrey/gmartloyalty/internal/accrual"
+        "github.com/korobkovandrey/gmartloyalty/internal/config"
+        "github.com/korobkovandrey/gmartloyalty/internal/infra/store"
+        "github.com/korobkovandrey/gmartloyalty/internal/server"
+        "github.com/korobkovandrey/gmartloyalty/pkg/logging"
+        "go.uber.org/zap"
+        "go.uber.org/zap/zapcore"
+)
+
+func main() <span class="cov0" title="0">{
+        _ = godotenv.Load()
+        cfg, err := config.NewConfig()
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatal(err)
+        }</span>
+        <span class="cov0" title="0">l, err := logging.NewZapLogger(zapcore.Level(cfg.LogLevel), cfg.LogOutput)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatal(err)
+        }</span>
+        <span class="cov0" title="0">defer l.Sync()
+        ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+        defer cancel()
+        l.InfoCtx(ctx, "", zap.Any("config", cfg))
+
+        s, err := store.NewStore(ctx, cfg.DatabaseURI)
+        if err != nil </span><span class="cov0" title="0">{
+                l.FatalCtx(ctx, fmt.Errorf("failed to open database: %v", err).Error())
+        }</span>
+        <span class="cov0" title="0">defer func() </span><span class="cov0" title="0">{
+                if err := s.Close(); err != nil </span><span class="cov0" title="0">{
+                        l.ErrorCtx(ctx, fmt.Errorf("failed to close database: %v", err).Error())
+                }</span>
+        }()
+
+        <span class="cov0" title="0">a := accrual.NewAccrual(l, s, &amp;accrual.Config{
+                AccrualSystemAddress: cfg.AccrualSystemAddress,
+                JobsSize:             100,
+                DeferJobsSize:        100,
+                NumWorkers:           runtime.NumCPU(),
+                MaxAttempts:          3,
+                AttemptTimeout:       3 * time.Second,
+        })
+        a.Run(ctx)
+        defer a.Close()
+
+        notProcessedOrders, err := s.GetOrdersNotProcessed(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                l.FatalCtx(ctx, fmt.Errorf("failed to get orders: %v", err).Error())
+        }</span>
+        <span class="cov0" title="0">for _, o := range notProcessedOrders </span><span class="cov0" title="0">{
+                a.PushOrder(o.Number)
+        }</span>
+
+        <span class="cov0" title="0">if err := server.Run(ctx, cfg, l, s, a); err != nil </span><span class="cov0" title="0">{
+                l.FatalCtx(ctx, fmt.Errorf("failed to launch server: %v", err).Error())
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package db
+
+import (
+        "embed"
+        "errors"
+        "fmt"
+
+        "github.com/golang-migrate/migrate/v4"
+        _ "github.com/golang-migrate/migrate/v4/database/postgres"
+        _ "github.com/golang-migrate/migrate/v4/source/file"
+        "github.com/golang-migrate/migrate/v4/source/iofs"
+)
+
+//go:embed migrations/*.sql
+var embedSQL embed.FS
+
+func Migrate(dsn string) error <span class="cov10" title="4">{
+        d, err := iofs.New(embedSQL, "migrations")
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to return an iofs driver: %w", err)
+        }</span>
+        <span class="cov10" title="4">m, err := migrate.NewWithSourceInstance("iofs", d, dsn)
+        if err != nil </span><span class="cov8" title="3">{
+                return fmt.Errorf("failed to get a new migrate instance: %w", err)
+        }</span>
+
+        <span class="cov1" title="1">if err := m.Up(); err != nil </span><span class="cov0" title="0">{
+                if !errors.Is(err, migrate.ErrNoChange) </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed migrate: %w", err)
+                }</span>
+        }
+        <span class="cov1" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">// Code generated by sqlc. DO NOT EDIT.
+// versions:
+//   sqlc v1.28.0
+// source: balance.sql
+
+package query
+
+import (
+        "context"
+)
+
+const accrual = `-- name: Accrual :one
+SELECT COALESCE(SUM(accrual), 0)::numeric FROM orders WHERE status = 'PROCESSED' AND user_id = $1
+`
+
+func (q *Queries) Accrual(ctx context.Context, userID int64) (float64, error) <span class="cov10" title="2">{
+        row := q.db.QueryRowContext(ctx, accrual, userID)
+        var column_1 float64
+        err := row.Scan(&amp;column_1)
+        return column_1, err
+}</span>
+
+const withdrawn = `-- name: Withdrawn :one
+SELECT COALESCE(SUM(sum), 0)::numeric FROM withdrawals WHERE user_id = $1
+`
+
+func (q *Queries) Withdrawn(ctx context.Context, userID int64) (float64, error) <span class="cov10" title="2">{
+        row := q.db.QueryRowContext(ctx, withdrawn, userID)
+        var column_1 float64
+        err := row.Scan(&amp;column_1)
+        return column_1, err
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">// Code generated by sqlc. DO NOT EDIT.
+// versions:
+//   sqlc v1.28.0
+
+package query
+
+import (
+        "context"
+        "database/sql"
+)
+
+type DBTX interface {
+        ExecContext(context.Context, string, ...interface{}) (sql.Result, error)
+        PrepareContext(context.Context, string) (*sql.Stmt, error)
+        QueryContext(context.Context, string, ...interface{}) (*sql.Rows, error)
+        QueryRowContext(context.Context, string, ...interface{}) *sql.Row
+}
+
+func New(db DBTX) *Queries <span class="cov10" title="14">{
+        return &amp;Queries{db: db}
+}</span>
+
+type Queries struct {
+        db DBTX
+}
+
+func (q *Queries) WithTx(tx *sql.Tx) *Queries <span class="cov0" title="0">{
+        return &amp;Queries{
+                db: tx,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">// Code generated by sqlc. DO NOT EDIT.
+// versions:
+//   sqlc v1.28.0
+
+package query
+
+import (
+        "database/sql/driver"
+        "fmt"
+        "time"
+)
+
+type TOrderStatus string
+
+const (
+        TOrderStatusNEW        TOrderStatus = "NEW"
+        TOrderStatusPROCESSING TOrderStatus = "PROCESSING"
+        TOrderStatusINVALID    TOrderStatus = "INVALID"
+        TOrderStatusPROCESSED  TOrderStatus = "PROCESSED"
+)
+
+func (e *TOrderStatus) Scan(src interface{}) error <span class="cov10" title="20">{
+        switch s := src.(type) </span>{
+        case []byte:<span class="cov3" title="2">
+                *e = TOrderStatus(s)</span>
+        case string:<span class="cov8" title="14">
+                *e = TOrderStatus(s)</span>
+        default:<span class="cov5" title="4">
+                return fmt.Errorf("unsupported scan type for TOrderStatus: %T", src)</span>
+        }
+        <span class="cov9" title="16">return nil</span>
+}
+
+type NullTOrderStatus struct {
+        TOrderStatus TOrderStatus
+        Valid        bool // Valid is true if TOrderStatus is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullTOrderStatus) Scan(value interface{}) error <span class="cov5" title="5">{
+        if value == nil </span><span class="cov1" title="1">{
+                ns.TOrderStatus, ns.Valid = "", false
+                return nil
+        }</span>
+        <span class="cov5" title="4">ns.Valid = true
+        return ns.TOrderStatus.Scan(value)</span>
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullTOrderStatus) Value() (driver.Value, error) <span class="cov3" title="2">{
+        if !ns.Valid </span><span class="cov1" title="1">{
+                return nil, nil
+        }</span>
+        <span class="cov1" title="1">return string(ns.TOrderStatus), nil</span>
+}
+
+type Order struct {
+        ID         int64
+        UserID     int64
+        Number     string
+        Status     TOrderStatus
+        Accrual    float64
+        UploadedAt time.Time
+}
+
+type User struct {
+        ID        int64
+        Login     string
+        Password  string
+        CreatedAt time.Time
+        UpdatedAt time.Time
+}
+
+type Withdrawal struct {
+        ID          int64
+        UserID      int64
+        Order       string
+        Sum         float64
+        ProcessedAt time.Time
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">// Code generated by sqlc. DO NOT EDIT.
+// versions:
+//   sqlc v1.28.0
+// source: orders.sql
+
+package query
+
+import (
+        "context"
+        "time"
+)
+
+const createOrder = `-- name: CreateOrder :one
+INSERT INTO orders (user_id, number, status, uploaded_at)
+VALUES ($1, $2,  'NEW', $3)
+RETURNING id
+`
+
+type CreateOrderParams struct {
+        UserID     int64
+        Number     string
+        UploadedAt time.Time
+}
+
+func (q *Queries) CreateOrder(ctx context.Context, arg CreateOrderParams) (int64, error) <span class="cov6" title="3">{
+        row := q.db.QueryRowContext(ctx, createOrder, arg.UserID, arg.Number, arg.UploadedAt)
+        var id int64
+        err := row.Scan(&amp;id)
+        return id, err
+}</span>
+
+const getOrderByID = `-- name: GetOrderByID :one
+SELECT id, user_id, number, status, accrual, uploaded_at FROM orders WHERE id=$1 LIMIT 1
+`
+
+func (q *Queries) GetOrderByID(ctx context.Context, id int64) (Order, error) <span class="cov9" title="5">{
+        row := q.db.QueryRowContext(ctx, getOrderByID, id)
+        var i Order
+        err := row.Scan(
+                &amp;i.ID,
+                &amp;i.UserID,
+                &amp;i.Number,
+                &amp;i.Status,
+                &amp;i.Accrual,
+                &amp;i.UploadedAt,
+        )
+        return i, err
+}</span>
+
+const getOrderByNumber = `-- name: GetOrderByNumber :one
+SELECT id, user_id, number, status, accrual, uploaded_at FROM orders WHERE number=$1 LIMIT 1
+`
+
+func (q *Queries) GetOrderByNumber(ctx context.Context, number string) (Order, error) <span class="cov6" title="3">{
+        row := q.db.QueryRowContext(ctx, getOrderByNumber, number)
+        var i Order
+        err := row.Scan(
+                &amp;i.ID,
+                &amp;i.UserID,
+                &amp;i.Number,
+                &amp;i.Status,
+                &amp;i.Accrual,
+                &amp;i.UploadedAt,
+        )
+        return i, err
+}</span>
+
+const getOrdersForUserID = `-- name: GetOrdersForUserID :many
+SELECT id, user_id, number, status, accrual, uploaded_at FROM orders WHERE user_id=$1 ORDER BY uploaded_at DESC
+`
+
+func (q *Queries) GetOrdersForUserID(ctx context.Context, userID int64) ([]Order, error) <span class="cov7" title="4">{
+        rows, err := q.db.QueryContext(ctx, getOrdersForUserID, userID)
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, err
+        }</span>
+        <span class="cov6" title="3">defer rows.Close()
+        var items []Order
+        for rows.Next() </span><span class="cov10" title="6">{
+                var i Order
+                if err := rows.Scan(
+                        &amp;i.ID,
+                        &amp;i.UserID,
+                        &amp;i.Number,
+                        &amp;i.Status,
+                        &amp;i.Accrual,
+                        &amp;i.UploadedAt,
+                ); err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span>
+                <span class="cov10" title="6">items = append(items, i)</span>
+        }
+        <span class="cov6" title="3">if err := rows.Close(); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov6" title="3">if err := rows.Err(); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov6" title="3">return items, nil</span>
+}
+
+const getOrdersNotProcessed = `-- name: GetOrdersNotProcessed :many
+SELECT id, user_id, number, status, accrual, uploaded_at FROM orders WHERE status NOT IN ('PROCESSED', 'INVALID') ORDER BY uploaded_at
+`
+
+func (q *Queries) GetOrdersNotProcessed(ctx context.Context) ([]Order, error) <span class="cov6" title="3">{
+        rows, err := q.db.QueryContext(ctx, getOrdersNotProcessed)
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, err
+        }</span>
+        <span class="cov4" title="2">defer rows.Close()
+        var items []Order
+        for rows.Next() </span><span class="cov4" title="2">{
+                var i Order
+                if err := rows.Scan(
+                        &amp;i.ID,
+                        &amp;i.UserID,
+                        &amp;i.Number,
+                        &amp;i.Status,
+                        &amp;i.Accrual,
+                        &amp;i.UploadedAt,
+                ); err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span>
+                <span class="cov4" title="2">items = append(items, i)</span>
+        }
+        <span class="cov4" title="2">if err := rows.Close(); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov4" title="2">if err := rows.Err(); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov4" title="2">return items, nil</span>
+}
+
+const setOrderStatus = `-- name: SetOrderStatus :exec
+UPDATE orders SET status=$1 WHERE id=$2
+`
+
+type SetOrderStatusParams struct {
+        Status TOrderStatus
+        ID     int64
+}
+
+func (q *Queries) SetOrderStatus(ctx context.Context, arg SetOrderStatusParams) error <span class="cov1" title="1">{
+        _, err := q.db.ExecContext(ctx, setOrderStatus, arg.Status, arg.ID)
+        return err
+}</span>
+
+const setOrderStatusAndAccrual = `-- name: SetOrderStatusAndAccrual :exec
+UPDATE orders SET status=$1, accrual=$2 WHERE id=$3
+`
+
+type SetOrderStatusAndAccrualParams struct {
+        Status  TOrderStatus
+        Accrual float64
+        ID      int64
+}
+
+func (q *Queries) SetOrderStatusAndAccrual(ctx context.Context, arg SetOrderStatusAndAccrualParams) error <span class="cov1" title="1">{
+        _, err := q.db.ExecContext(ctx, setOrderStatusAndAccrual, arg.Status, arg.Accrual, arg.ID)
+        return err
+}</span>
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">// Code generated by sqlc. DO NOT EDIT.
+// versions:
+//   sqlc v1.28.0
+// source: users.sql
+
+package query
+
+import (
+        "context"
+        "time"
+)
+
+const createUser = `-- name: CreateUser :one
+INSERT INTO users (login, password, created_at, updated_at)
+VALUES ($1, $2, $3, $3)
+RETURNING id
+`
+
+type CreateUserParams struct {
+        Login     string
+        Password  string
+        CreatedAt time.Time
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (int64, error) <span class="cov10" title="2">{
+        row := q.db.QueryRowContext(ctx, createUser, arg.Login, arg.Password, arg.CreatedAt)
+        var id int64
+        err := row.Scan(&amp;id)
+        return id, err
+}</span>
+
+const getUserById = `-- name: GetUserById :one
+SELECT id, login, password, created_at, updated_at FROM users WHERE id=$1 LIMIT 1
+`
+
+func (q *Queries) GetUserById(ctx context.Context, id int64) (User, error) <span class="cov10" title="2">{
+        row := q.db.QueryRowContext(ctx, getUserById, id)
+        var i User
+        err := row.Scan(
+                &amp;i.ID,
+                &amp;i.Login,
+                &amp;i.Password,
+                &amp;i.CreatedAt,
+                &amp;i.UpdatedAt,
+        )
+        return i, err
+}</span>
+
+const getUserByLogin = `-- name: GetUserByLogin :one
+SELECT id, login, password, created_at, updated_at FROM users WHERE login=$1 LIMIT 1
+`
+
+func (q *Queries) GetUserByLogin(ctx context.Context, login string) (User, error) <span class="cov10" title="2">{
+        row := q.db.QueryRowContext(ctx, getUserByLogin, login)
+        var i User
+        err := row.Scan(
+                &amp;i.ID,
+                &amp;i.Login,
+                &amp;i.Password,
+                &amp;i.CreatedAt,
+                &amp;i.UpdatedAt,
+        )
+        return i, err
+}</span>
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">// Code generated by sqlc. DO NOT EDIT.
+// versions:
+//   sqlc v1.28.0
+// source: withdrawals.sql
+
+package query
+
+import (
+        "context"
+        "time"
+)
+
+const createWithdraw = `-- name: CreateWithdraw :one
+INSERT INTO withdrawals (user_id, "order", sum, processed_at)
+VALUES ($1, $2, $3, $4)
+RETURNING id
+`
+
+type CreateWithdrawParams struct {
+        UserID      int64
+        Order       string
+        Sum         float64
+        ProcessedAt time.Time
+}
+
+func (q *Queries) CreateWithdraw(ctx context.Context, arg CreateWithdrawParams) (int64, error) <span class="cov5" title="2">{
+        row := q.db.QueryRowContext(ctx, createWithdraw,
+                arg.UserID,
+                arg.Order,
+                arg.Sum,
+                arg.ProcessedAt,
+        )
+        var id int64
+        err := row.Scan(&amp;id)
+        return id, err
+}</span>
+
+const getWithdrawalsForUserID = `-- name: GetWithdrawalsForUserID :many
+SELECT id, user_id, "order", sum, processed_at FROM withdrawals WHERE user_id=$1 ORDER BY processed_at DESC
+`
+
+func (q *Queries) GetWithdrawalsForUserID(ctx context.Context, userID int64) ([]Withdrawal, error) <span class="cov10" title="4">{
+        rows, err := q.db.QueryContext(ctx, getWithdrawalsForUserID, userID)
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="3">defer rows.Close()
+        var items []Withdrawal
+        for rows.Next() </span><span class="cov10" title="4">{
+                var i Withdrawal
+                if err := rows.Scan(
+                        &amp;i.ID,
+                        &amp;i.UserID,
+                        &amp;i.Order,
+                        &amp;i.Sum,
+                        &amp;i.ProcessedAt,
+                ); err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span>
+                <span class="cov10" title="4">items = append(items, i)</span>
+        }
+        <span class="cov8" title="3">if err := rows.Close(); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="3">if err := rows.Err(); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="3">return items, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package accrual
+
+import (
+        "context"
+        "database/sql"
+        "errors"
+        "fmt"
+        "sync"
+        "time"
+
+        "github.com/korobkovandrey/gmartloyalty/db/query"
+        "github.com/korobkovandrey/gmartloyalty/pkg/logging"
+)
+
+//go:generate mockgen -source=accrual.go -destination=mocks/mock_orderstore.go -package=mocks
+
+type orderStore interface {
+        GetOrderByNumber(ctx context.Context, number string) (query.Order, error)
+        SetOrderStatus(ctx context.Context, arg query.SetOrderStatusParams) error
+        SetOrderStatusAndAccrual(ctx context.Context, arg query.SetOrderStatusAndAccrualParams) error
+}
+
+type job struct {
+        orderNum string
+        attempt  int
+}
+
+type Config struct {
+        AccrualSystemAddress string
+        JobsSize             int
+        DeferJobsSize        int
+        NumWorkers           int
+        MaxAttempts          int
+        AttemptTimeout       time.Duration
+}
+
+type Accrual struct {
+        cfg         *Config
+        jobsCh      chan job
+        deferJobsCh chan job
+        l           *logging.ZapLogger
+        r           orderStore
+        c           *client
+        waitCh      chan struct{}
+        waitMux     sync.RWMutex
+        wg          sync.WaitGroup
+}
+
+func NewAccrual(l *logging.ZapLogger, r orderStore, cfg *Config) *Accrual <span class="cov10" title="3">{
+        waitCh := make(chan struct{})
+        close(waitCh)
+        return &amp;Accrual{
+                cfg:         cfg,
+                jobsCh:      make(chan job, cfg.JobsSize),
+                deferJobsCh: make(chan job, cfg.DeferJobsSize),
+                l:           l,
+                r:           r,
+                c:           newClient(cfg.AccrualSystemAddress),
+                waitCh:      waitCh,
+        }
+}</span>
+
+func (s *Accrual) Run(ctx context.Context) <span class="cov10" title="3">{
+        s.wg.Add(s.cfg.NumWorkers + 1)
+        go func() </span><span class="cov10" title="3">{
+                for j := range s.deferJobsCh </span><span class="cov0" title="0">{
+                        if ctx.Err() != nil </span><span class="cov0" title="0">{
+                                break</span>
+                        }
+                        <span class="cov0" title="0">s.pushJob(j)</span>
+                }
+                <span class="cov10" title="3">s.wg.Done()</span>
+        }()
+        <span class="cov10" title="3">for i := 0; i &lt; s.cfg.NumWorkers; i++ </span><span class="cov10" title="3">{
+                go func() </span><span class="cov10" title="3">{
+                        s.worker(ctx)
+                        s.wg.Done()
+                }</span>()
+        }
+}
+
+func (s *Accrual) PushOrder(orderNum string) <span class="cov10" title="3">{
+        s.pushJob(job{orderNum: orderNum})
+}</span>
+
+func (s *Accrual) pushJob(j job) <span class="cov10" title="3">{
+        s.jobsCh &lt;- j
+}</span>
+
+func (s *Accrual) pushDeferredJob(j job) <span class="cov0" title="0">{
+        time.AfterFunc(s.cfg.AttemptTimeout, func() </span><span class="cov0" title="0">{
+                s.deferJobsCh &lt;- j
+        }</span>)
+}
+
+func (s *Accrual) getOrderToProcess(ctx context.Context, j job) (*query.Order, error) <span class="cov10" title="3">{
+        order, err := s.r.GetOrderByNumber(ctx, j.orderNum)
+        if err != nil </span><span class="cov1" title="1">{
+                if !errors.Is(err, sql.ErrNoRows) </span><span class="cov0" title="0">{
+                        s.pushDeferredJob(j)
+                }</span>
+                <span class="cov1" title="1">return nil, fmt.Errorf("failed to get order: %w", err)</span>
+        }
+        <span class="cov6" title="2">if order.Status == query.TOrderStatusNEW </span><span class="cov1" title="1">{
+                if err := s.r.SetOrderStatus(ctx, query.SetOrderStatusParams{
+                        ID:     order.ID,
+                        Status: query.TOrderStatusPROCESSING,
+                }); err != nil </span><span class="cov0" title="0">{
+                        s.pushDeferredJob(j)
+                        return nil, fmt.Errorf("failed to set order status: %w", err)
+                }</span>
+        } else<span class="cov1" title="1"> if order.Status != query.TOrderStatusPROCESSING </span><span class="cov1" title="1">{
+                return nil, errors.New("order is already processed")
+        }</span>
+        <span class="cov1" title="1">return &amp;order, nil</span>
+}
+
+func (s *Accrual) worker(ctx context.Context) <span class="cov10" title="3">{
+        for j := range s.jobsCh </span><span class="cov10" title="3">{
+                s.waitRetry(ctx)
+                if ctx.Err() != nil </span><span class="cov0" title="0">{
+                        break</span>
+                }
+                <span class="cov10" title="3">order, err := s.getOrderToProcess(ctx, j)
+                if err != nil </span><span class="cov6" title="2">{
+                        s.l.ErrorCtx(ctx, fmt.Errorf("failed to get order: %w", err).Error())
+                        continue</span>
+                }
+
+                <span class="cov1" title="1">toCtx, toCancel := context.WithTimeout(ctx, 10*time.Second)
+                resp, err := s.c.getOrder(toCtx, order.Number)
+                toCancel()
+                if err != nil </span><span class="cov0" title="0">{
+                        s.l.ErrorCtx(ctx, fmt.Errorf("failed to get accrual: %w", err).Error())
+                        resp = &amp;orderResponse{
+                                Order: order.Number,
+                        }
+                }</span>
+
+                <span class="cov1" title="1">if resp.Status == "" </span><span class="cov0" title="0">{
+                        j.attempt++
+                }</span>
+                <span class="cov1" title="1">if resp.RetryAfter &gt; 0 </span><span class="cov0" title="0">{
+                        s.startWaitRetry(ctx, resp.RetryAfter)
+                }</span>
+                <span class="cov1" title="1">if resp.Status == "PROCESSED" || resp.Status == "INVALID" </span><span class="cov1" title="1">{
+                        if err := s.r.SetOrderStatusAndAccrual(ctx, query.SetOrderStatusAndAccrualParams{
+                                ID:      order.ID,
+                                Status:  query.TOrderStatus(resp.Status),
+                                Accrual: resp.Accrual,
+                        }); err != nil </span><span class="cov0" title="0">{
+                                s.l.ErrorCtx(ctx, fmt.Errorf("failed to set order status and accrual: %w", err).Error())
+                                s.pushDeferredJob(j)
+                                continue</span>
+                        }
+                } else<span class="cov0" title="0"> if j.attempt &lt; s.cfg.MaxAttempts </span><span class="cov0" title="0">{
+                        s.pushDeferredJob(j)
+                }</span> else<span class="cov0" title="0"> {
+                        if err := s.r.SetOrderStatus(ctx, query.SetOrderStatusParams{
+                                ID:     order.ID,
+                                Status: query.TOrderStatusINVALID,
+                        }); err != nil </span><span class="cov0" title="0">{
+                                s.l.ErrorCtx(ctx, fmt.Errorf("failed to set order status: %w", err).Error())
+                                continue</span>
+                        }
+                        <span class="cov0" title="0">s.l.WarnCtx(ctx, fmt.Sprintf("max attempts reached for order %s", order.Number))</span>
+                }
+        }
+}
+
+func (s *Accrual) waitRetry(ctx context.Context) <span class="cov10" title="3">{
+        s.waitMux.RLock()
+        defer s.waitMux.RUnlock()
+        select </span>{
+        case &lt;-ctx.Done():<span class="cov0" title="0"></span>
+        case &lt;-s.waitCh:<span class="cov10" title="3"></span>
+        }
+}
+
+func (s *Accrual) startWaitRetry(ctx context.Context, timeout int) <span class="cov0" title="0">{
+        s.waitMux.Lock()
+        defer s.waitMux.Unlock()
+        select </span>{
+        case &lt;-s.waitCh:<span class="cov0" title="0">
+                s.waitCh = make(chan struct{})
+                go func() </span><span class="cov0" title="0">{
+                        select </span>{
+                        case &lt;-ctx.Done():<span class="cov0" title="0"></span>
+                        case &lt;-time.After(time.Duration(timeout) * time.Second):<span class="cov0" title="0"></span>
+                        }
+                        <span class="cov0" title="0">close(s.waitCh)</span>
+                }()
+        default:<span class="cov0" title="0"></span>
+        }
+}
+
+func (s *Accrual) Close() <span class="cov10" title="3">{
+        close(s.deferJobsCh)
+        close(s.jobsCh)
+        s.c.close()
+        s.wg.Wait()
+}</span>
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package accrual
+
+import (
+        "context"
+        "fmt"
+        "net/http"
+        "strconv"
+        "time"
+
+        "resty.dev/v3"
+)
+
+type client struct {
+        *resty.Client
+}
+
+func newClient(baseURL string) *client <span class="cov10" title="6">{
+        return &amp;client{resty.New().
+                SetBaseURL(baseURL).
+                SetRetryCount(3).
+                SetRetryWaitTime(2 * time.Second).
+                SetRetryMaxWaitTime(5 * time.Second)}
+}</span>
+
+type orderResponse struct {
+        Order      string
+        Status     string
+        Accrual    float64
+        RetryAfter int
+}
+
+func (c *client) getOrder(ctx context.Context, order string) (*orderResponse, error) <span class="cov7" title="4">{
+        result := &amp;orderResponse{}
+        r, err := c.R().SetContext(ctx).
+                SetResult(result).Get("/api/orders/" + order)
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, fmt.Errorf("failed to get order: %w", err)
+        }</span>
+        <span class="cov6" title="3">if r.StatusCode() == http.StatusTooManyRequests </span><span class="cov1" title="1">{
+                result.RetryAfter = 60
+                if ra := r.Header().Get("Retry-After"); ra != "" </span><span class="cov1" title="1">{
+                        if raInt, err := strconv.Atoi(ra); err == nil </span><span class="cov1" title="1">{
+                                result.RetryAfter = raInt
+                        }</span>
+                }
+        }
+        <span class="cov6" title="3">return result, nil</span>
+}
+
+func (c *client) close() <span class="cov10" title="6">{
+        _ = c.Client.Close()
+}</span>
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package config
+
+import (
+        "errors"
+        "fmt"
+        "strings"
+
+        "github.com/spf13/pflag"
+        "github.com/spf13/viper"
+        "go.uber.org/zap"
+)
+
+type Config struct {
+        RunAddress           string   `mapstructure:"run_address"`
+        DatabaseURI          string   `mapstructure:"database_uri"`
+        AccrualSystemAddress string   `mapstructure:"accrual_system_address"`
+        JWTKey               string   `mapstructure:"jwt_key"`
+        JWTLifeHours         int16    `mapstructure:"jwt_life_hours"`
+        LogLevel             int8     `mapstructure:"log_level"`
+        LogOutput            []string `mapstructure:"log_output"`
+}
+
+func NewConfig() (cfg *Config, err error) <span class="cov8" title="1">{
+        conf := viper.New()
+        conf.AutomaticEnv()
+        conf.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+        cfg = &amp;Config{
+                RunAddress:           ":8090",
+                DatabaseURI:          "",
+                AccrualSystemAddress: "http://localhost:8080",
+                JWTKey:               "secret",
+                JWTLifeHours:         24,
+                LogLevel:             -1,
+                LogOutput:            []string{"stderr"},
+        }
+        conf.SetDefault("run_address", cfg.RunAddress)
+        pflag.String("a", cfg.RunAddress, "address to run HTTP server")
+        _ = conf.BindPFlag("run_address", pflag.Lookup("a"))
+
+        conf.SetDefault("database_uri", cfg.DatabaseURI)
+        pflag.String("d", cfg.DatabaseURI, "URI to database")
+        _ = conf.BindPFlag("database_uri", pflag.Lookup("d"))
+
+        conf.SetDefault("accrual_system_address", cfg.AccrualSystemAddress)
+        pflag.String("r", cfg.AccrualSystemAddress, "accrual system address")
+        _ = conf.BindPFlag("accrual_system_address", pflag.Lookup("r"))
+
+        conf.SetDefault("jwt_key", cfg.JWTKey)
+        pflag.String("j", cfg.JWTKey, "JWT secret key")
+        _ = conf.BindPFlag("jwt_key", pflag.Lookup("j"))
+
+        conf.SetDefault("jwt_life_hours", cfg.JWTLifeHours)
+        pflag.Int16("h", cfg.JWTLifeHours, "JWT life hours")
+        _ = conf.BindPFlag("jwt_life_hours", pflag.Lookup("h"))
+
+        conf.SetDefault("log_level", cfg.LogLevel)
+        pflag.Int8("log-level", cfg.LogLevel, "log level: -1 debug, 0 info, 1 warn, 2 error, 3 dPanic, 4 panic, 5 fatal")
+        _ = conf.BindPFlag("log_level", pflag.Lookup("log-level"))
+
+        conf.SetDefault("log_output", cfg.LogOutput)
+        pflag.StringSlice("log-output", cfg.LogOutput, "comma separated log output paths")
+        _ = conf.BindPFlag("log_output", pflag.Lookup("log-output"))
+
+        if err = conf.ReadInConfig(); err != nil &amp;&amp; !errors.As(err, &amp;viper.ConfigFileNotFoundError{}) </span><span class="cov0" title="0">{
+                return cfg, fmt.Errorf("failed to read config: %w", err)
+        }</span>
+        <span class="cov8" title="1">pflag.Parse()
+        if err = conf.Unmarshal(cfg); err != nil </span><span class="cov0" title="0">{
+                return cfg, fmt.Errorf("failed to unmarshal config: %w", err)
+        }</span>
+        <span class="cov8" title="1">if cfg.LogLevel &lt; int8(zap.DebugLevel) || cfg.LogLevel &gt; int8(zap.FatalLevel) </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("invalid log level: %d", cfg.LogLevel)
+        }</span>
+        <span class="cov8" title="1">if cfg.DatabaseURI == "" </span><span class="cov0" title="0">{
+                return nil, errors.New("database URI is empty")
+        }</span>
+        <span class="cov8" title="1">if cfg.JWTKey == "" </span><span class="cov0" title="0">{
+                return nil, errors.New("JWT key is empty")
+        }</span>
+        <span class="cov8" title="1">return cfg, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">//nolint:dupl // ignore
+package auth
+
+import (
+        "context"
+        "errors"
+        "net/http"
+
+        "github.com/gin-gonic/gin"
+        "github.com/korobkovandrey/gmartloyalty/internal/service"
+        "github.com/korobkovandrey/gmartloyalty/pkg/logging"
+        "go.uber.org/zap"
+)
+
+//go:generate mockgen -source=login.go -destination=mocks/mock_loginservice.go -package=mocks
+
+type loginService interface {
+        Login(ctx context.Context, login, password string) (string, error)
+}
+
+func NewLoginHandler(s loginService) gin.HandlerFunc <span class="cov10" title="5">{
+        return func(c *gin.Context) </span><span class="cov10" title="5">{
+                var form struct {
+                        Login    string `binding:"required"`
+                        Password string `binding:"required"`
+                }
+                if err := c.ShouldBind(&amp;form); err != nil </span><span class="cov4" title="2">{
+                        _ = c.Error(err)
+                        c.Status(http.StatusBadRequest)
+                        return
+                }</span>
+                <span class="cov7" title="3">logging.SetGinContextFields(c, zap.String("login", form.Login))
+                token, err := s.Login(c, form.Login, form.Password)
+                if err != nil </span><span class="cov4" title="2">{
+                        _ = c.Error(err)
+                        if errors.Is(err, service.ErrNotFound) </span><span class="cov1" title="1">{
+                                c.Status(http.StatusUnauthorized)
+                                return
+                        }</span>
+                        <span class="cov1" title="1">c.Status(http.StatusInternalServerError)
+                        return</span>
+                }
+                <span class="cov1" title="1">c.Header("Authorization", token)
+                c.Status(http.StatusOK)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">//nolint:dupl // ignore
+package auth
+
+import (
+        "context"
+        "errors"
+        "net/http"
+
+        "github.com/gin-gonic/gin"
+        "github.com/korobkovandrey/gmartloyalty/internal/service"
+        "github.com/korobkovandrey/gmartloyalty/pkg/logging"
+        "go.uber.org/zap"
+)
+
+//go:generate mockgen -source=register.go -destination=mocks/mock_registerservice.go -package=mocks
+
+type registerService interface {
+        Register(ctx context.Context, login, password string) (string, error)
+}
+
+func NewRegisterHandler(s registerService) gin.HandlerFunc <span class="cov10" title="5">{
+        return func(c *gin.Context) </span><span class="cov10" title="5">{
+                var form struct {
+                        Login    string `binding:"required"`
+                        Password string `binding:"required"`
+                }
+                if err := c.ShouldBind(&amp;form); err != nil </span><span class="cov4" title="2">{
+                        _ = c.Error(err)
+                        c.Status(http.StatusBadRequest)
+                        return
+                }</span>
+                <span class="cov7" title="3">logging.SetGinContextFields(c, zap.String("login", form.Login))
+                token, err := s.Register(c, form.Login, form.Password)
+                if err != nil </span><span class="cov4" title="2">{
+                        _ = c.Error(err)
+                        if errors.Is(err, service.ErrAlreadyExists) </span><span class="cov1" title="1">{
+                                c.Status(http.StatusConflict)
+                                return
+                        }</span>
+                        <span class="cov1" title="1">c.Status(http.StatusInternalServerError)
+                        return</span>
+                }
+                <span class="cov1" title="1">c.Header("Authorization", token)
+                c.Status(http.StatusOK)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package handlers
+
+import (
+        "context"
+        "net/http"
+
+        "github.com/gin-gonic/gin"
+        "github.com/korobkovandrey/gmartloyalty/internal/service"
+)
+
+//go:generate mockgen -source=balance.go -destination=mocks/mock_balance.go -package=mocks
+
+type balance interface {
+        Balance(ctx context.Context, userID int64) (*service.BalanceResponse, error)
+}
+
+func NewBalanceHandler(s balance) gin.HandlerFunc <span class="cov10" title="3">{
+        return func(c *gin.Context) </span><span class="cov10" title="3">{
+                userID := c.GetInt64("userID")
+                if userID == 0 </span><span class="cov1" title="1">{
+                        c.Status(http.StatusUnauthorized)
+                        return
+                }</span>
+                <span class="cov6" title="2">b, err := s.Balance(c, userID)
+                if err != nil </span><span class="cov1" title="1">{
+                        c.Status(http.StatusInternalServerError)
+                        return
+                }</span>
+                <span class="cov1" title="1">c.JSON(http.StatusOK, b)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package orders
+
+import (
+        "context"
+        "errors"
+        "net/http"
+        "strings"
+
+        "github.com/gin-gonic/gin"
+        "github.com/korobkovandrey/gmartloyalty/internal/service"
+        "github.com/korobkovandrey/gmartloyalty/pkg/logging"
+        "github.com/korobkovandrey/gmartloyalty/pkg/luhn"
+        "go.uber.org/zap"
+)
+
+//go:generate mockgen -source=create.go -destination=mocks/mock_ordercreator.go -package=mocks
+
+type orderCreator interface {
+        Push(ctx context.Context, userID int64, orderNumber string) error
+}
+
+type AccrualPusher interface {
+        PushOrder(orderNum string)
+}
+
+func NewCreateHandler(s orderCreator, a AccrualPusher) gin.HandlerFunc <span class="cov10" title="8">{
+        return func(c *gin.Context) </span><span class="cov10" title="8">{
+                userID := c.GetInt64("userID")
+                if userID == 0 </span><span class="cov1" title="1">{
+                        c.Status(http.StatusUnauthorized)
+                        return
+                }</span>
+                <span class="cov9" title="7">body, err := c.GetRawData()
+                if err != nil </span><span class="cov0" title="0">{
+                        _ = c.Error(err)
+                        c.Status(http.StatusBadRequest)
+                        return
+                }</span>
+                <span class="cov9" title="7">orderNumber := strings.TrimSpace(string(body))
+                if orderNumber == "" </span><span class="cov1" title="1">{
+                        c.Status(http.StatusBadRequest)
+                        return
+                }</span>
+                <span class="cov8" title="6">logging.SetGinContextFields(c, zap.String("orderNumber", orderNumber))
+                if !luhn.CheckString(orderNumber) </span><span class="cov4" title="2">{
+                        c.Status(http.StatusUnprocessableEntity)
+                        return
+                }</span>
+                <span class="cov7" title="4">if err := s.Push(c, userID, orderNumber); err != nil </span><span class="cov5" title="3">{
+                        if errors.Is(err, service.ErrAlreadyExistsSomeUser) </span><span class="cov1" title="1">{
+                                c.Status(http.StatusOK)
+                        }</span> else<span class="cov4" title="2"> if errors.Is(err, service.ErrAlreadyExists) </span><span class="cov1" title="1">{
+                                c.Status(http.StatusConflict)
+                        }</span> else<span class="cov1" title="1"> {
+                                _ = c.Error(err)
+                                c.Status(http.StatusInternalServerError)
+                        }</span>
+                        <span class="cov5" title="3">return</span>
+                }
+                <span class="cov1" title="1">go a.PushOrder(orderNumber)
+                c.Status(http.StatusAccepted)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package orders
+
+import (
+        "context"
+        "net/http"
+
+        "github.com/gin-gonic/gin"
+        "github.com/korobkovandrey/gmartloyalty/internal/service"
+)
+
+//go:generate mockgen -source=list.go -destination=mocks/mock_orderlister.go -package=mocks
+
+type orderLister interface {
+        List(ctx context.Context, userID int64) ([]service.OrderResponse, error)
+}
+
+func NewListHandler(s orderLister) gin.HandlerFunc <span class="cov10" title="4">{
+        return func(c *gin.Context) </span><span class="cov10" title="4">{
+                userID := c.GetInt64("userID")
+                if userID == 0 </span><span class="cov1" title="1">{
+                        c.Status(http.StatusUnauthorized)
+                        return
+                }</span>
+                <span class="cov8" title="3">l, err := s.List(c, userID)
+                if err != nil </span><span class="cov1" title="1">{
+                        _ = c.Error(err)
+                        c.Status(http.StatusInternalServerError)
+                        return
+                }</span>
+                <span class="cov5" title="2">if len(l) == 0 </span><span class="cov1" title="1">{
+                        c.Header("Content-Type", "application/json")
+                        c.Status(http.StatusNoContent)
+                        return
+                }</span>
+                <span class="cov1" title="1">c.JSON(http.StatusOK, l)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package handlers
+
+import (
+        "context"
+        "errors"
+        "net/http"
+
+        "github.com/gin-gonic/gin"
+        "github.com/korobkovandrey/gmartloyalty/internal/service"
+        "github.com/korobkovandrey/gmartloyalty/pkg/luhn"
+)
+
+//go:generate mockgen -source=withdraw.go -destination=mocks/mock_withdraw.go -package=mocks
+
+type withdraw interface {
+        Create(ctx context.Context, userID int64, order string, sum float64) error
+}
+
+func NewWithdrawHandler(s withdraw) gin.HandlerFunc <span class="cov10" title="7">{
+        return func(c *gin.Context) </span><span class="cov10" title="7">{
+                userID := c.GetInt64("userID")
+                if userID == 0 </span><span class="cov1" title="1">{
+                        c.Status(http.StatusUnauthorized)
+                        return
+                }</span>
+                <span class="cov9" title="6">var form struct {
+                        Order string  `binding:"required"`
+                        Sum   float64 `binding:"required"`
+                }
+                if err := c.ShouldBind(&amp;form); err != nil </span><span class="cov4" title="2">{
+                        _ = c.Error(err)
+                        c.Status(http.StatusBadRequest)
+                        return
+                }</span>
+                <span class="cov7" title="4">if !luhn.CheckString(form.Order) </span><span class="cov1" title="1">{
+                        c.Status(http.StatusUnprocessableEntity)
+                        return
+                }</span>
+                <span class="cov6" title="3">if err := s.Create(c, userID, form.Order, form.Sum); err != nil </span><span class="cov4" title="2">{
+                        _ = c.Error(err)
+                        if errors.Is(err, service.ErrNotEnoughBalance) </span><span class="cov1" title="1">{
+                                c.Status(http.StatusConflict)
+                        }</span> else<span class="cov1" title="1"> {
+                                c.Status(http.StatusInternalServerError)
+                        }</span>
+                        <span class="cov4" title="2">return</span>
+                }
+                <span class="cov1" title="1">c.Status(http.StatusOK)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package handlers
+
+import (
+        "context"
+        "net/http"
+
+        "github.com/gin-gonic/gin"
+        "github.com/korobkovandrey/gmartloyalty/internal/service"
+)
+
+//go:generate mockgen -source=withdrawals.go -destination=mocks/mock_withdrawals.go -package=mocks
+
+type withdrawals interface {
+        List(ctx context.Context, userID int64) ([]service.WithdrawResponse, error)
+}
+
+func NewWithdrawalsHandler(s withdrawals) gin.HandlerFunc <span class="cov10" title="4">{
+        return func(c *gin.Context) </span><span class="cov10" title="4">{
+                userID := c.GetInt64("userID")
+                if userID == 0 </span><span class="cov1" title="1">{
+                        c.Status(http.StatusUnauthorized)
+                        return
+                }</span>
+                <span class="cov8" title="3">l, err := s.List(c, userID)
+                if err != nil </span><span class="cov1" title="1">{
+                        _ = c.Error(err)
+                        c.Status(http.StatusInternalServerError)
+                        return
+                }</span>
+                <span class="cov5" title="2">if len(l) == 0 </span><span class="cov1" title="1">{
+                        c.Header("Content-Type", "application/json")
+                        c.Status(http.StatusNoContent)
+                        return
+                }</span>
+                <span class="cov1" title="1">c.JSON(http.StatusOK, l)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package store
+
+import (
+        "context"
+        "database/sql"
+        "fmt"
+        "time"
+
+        _ "github.com/jackc/pgx/v5/stdlib"
+        "github.com/korobkovandrey/gmartloyalty/db"
+        "github.com/korobkovandrey/gmartloyalty/db/query"
+)
+
+type Store struct {
+        *query.Queries
+        DB *sql.DB
+}
+
+func NewStore(ctx context.Context, dsn string) (*Store, error) <span class="cov10" title="7">{
+        if err := db.Migrate(dsn); err != nil </span><span class="cov8" title="5">{
+                return nil, fmt.Errorf("failed to migrate database: %w", err)
+        }</span>
+        <span class="cov4" title="2">s := &amp;Store{}
+        var err error
+        s.DB, err = sql.Open("pgx", dsn)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to open database: %w", err)
+        }</span>
+        <span class="cov4" title="2">s.DB.SetMaxOpenConns(5)
+        s.DB.SetMaxIdleConns(5)
+        s.DB.SetConnMaxIdleTime(time.Minute)
+        s.DB.SetConnMaxLifetime(time.Minute)
+        err = s.DB.PingContext(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to ping database: %w", err)
+        }</span>
+        <span class="cov4" title="2">s.Queries = query.New(s.DB)
+        return s, nil</span>
+}
+
+func (s *Store) Close() error <span class="cov4" title="2">{
+        return s.DB.Close()
+}</span>
+
+func (s *Store) Balance(ctx context.Context, userID int64) (float64, error) <span class="cov6" title="3">{
+        a, err := s.Accrual(ctx, userID)
+        if err != nil </span><span class="cov1" title="1">{
+                return 0, fmt.Errorf("failed to get accrual: %w", err)
+        }</span>
+        <span class="cov4" title="2">w, err := s.Withdrawn(ctx, userID)
+        if err != nil </span><span class="cov1" title="1">{
+                return 0, fmt.Errorf("failed to get withdrawn: %w", err)
+        }</span>
+        <span class="cov1" title="1">return a - w, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">package middleware
+
+import (
+        "context"
+        "errors"
+        "fmt"
+        "net/http"
+        "strings"
+
+        "github.com/gin-gonic/gin"
+        "github.com/golang-jwt/jwt/v5"
+        "github.com/korobkovandrey/gmartloyalty/db/query"
+        "github.com/korobkovandrey/gmartloyalty/internal/service"
+        "github.com/korobkovandrey/gmartloyalty/pkg/logging"
+        "go.uber.org/zap"
+)
+
+//go:generate mockgen -source=auth.go -destination=mocks/mock_auth.go -package=mocks
+
+type finder interface {
+        Find(context.Context, int64) (*query.User, error)
+}
+
+func UserAuthJWT(secret []byte, s finder) gin.HandlerFunc <span class="cov10" title="5">{
+        return func(c *gin.Context) </span><span class="cov10" title="5">{
+                const prefix = "Bearer "
+                ah := c.Request.Header.Get("Authorization")
+                if ah == "" || !strings.HasPrefix(ah, prefix) </span><span class="cov1" title="1">{
+                        c.AbortWithStatus(http.StatusUnauthorized)
+                        return
+                }</span>
+                <span class="cov8" title="4">claims := jwt.MapClaims{}
+                token, err := jwt.ParseWithClaims(ah[len(prefix):], &amp;claims,
+                        func(t *jwt.Token) (interface{}, error) </span><span class="cov8" title="4">{
+                                if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok </span><span class="cov0" title="0">{
+                                        return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
+                                }</span>
+                                <span class="cov8" title="4">return secret, nil</span>
+                        })
+                <span class="cov8" title="4">if err != nil </span><span class="cov1" title="1">{
+                        _ = c.Error(err)
+                }</span>
+                <span class="cov8" title="4">if err != nil || !token.Valid </span><span class="cov1" title="1">{
+                        c.AbortWithStatus(http.StatusUnauthorized)
+                        return
+                }</span>
+                <span class="cov7" title="3">userID, ok := claims["userID"].(float64)
+                if !ok </span><span class="cov0" title="0">{
+                        _ = c.Error(fmt.Errorf("invalid userID: %v", claims))
+                        c.AbortWithStatus(http.StatusUnauthorized)
+                        return
+                }</span>
+                <span class="cov7" title="3">userIDInt64 := int64(userID)
+                if _, err = s.Find(c, userIDInt64); err != nil </span><span class="cov4" title="2">{
+                        _ = c.Error(err)
+                        if errors.Is(err, service.ErrNotFound) </span><span class="cov1" title="1">{
+                                c.AbortWithStatus(http.StatusUnauthorized)
+                        }</span> else<span class="cov1" title="1"> {
+                                c.AbortWithStatus(http.StatusInternalServerError)
+                        }</span>
+                        <span class="cov4" title="2">return</span>
+                }
+                <span class="cov1" title="1">c.Set("userID", userIDInt64)
+                logging.SetGinContextFields(c, zap.Int64("userID", userIDInt64))
+                c.Next()</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">package server
+
+import (
+        "context"
+        "errors"
+        "fmt"
+        "time"
+
+        "github.com/gin-contrib/graceful"
+        ginzap "github.com/gin-contrib/zap"
+        "github.com/gin-gonic/gin"
+        "github.com/korobkovandrey/gmartloyalty/internal/config"
+        "github.com/korobkovandrey/gmartloyalty/internal/handlers"
+        "github.com/korobkovandrey/gmartloyalty/internal/handlers/auth"
+        "github.com/korobkovandrey/gmartloyalty/internal/handlers/orders"
+        "github.com/korobkovandrey/gmartloyalty/internal/infra/store"
+        "github.com/korobkovandrey/gmartloyalty/internal/middleware"
+        "github.com/korobkovandrey/gmartloyalty/internal/service"
+        "github.com/korobkovandrey/gmartloyalty/pkg/logging"
+        "go.uber.org/zap/zapcore"
+)
+
+func Run(ctx context.Context, cfg *config.Config, l *logging.ZapLogger, s *store.Store, a orders.AccrualPusher) error <span class="cov0" title="0">{
+        r, err := graceful.New(gin.New(), graceful.WithAddr(cfg.RunAddress))
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to create router: %v", err)
+        }</span>
+        <span class="cov0" title="0">defer r.Close()
+        zapLoggerMiddleware := ginzap.GinzapWithConfig(l.Logger(), &amp;ginzap.Config{
+                TimeFormat:   time.RFC3339,
+                UTC:          true,
+                DefaultLevel: zapcore.InfoLevel,
+                Context: func(c *gin.Context) []zapcore.Field </span><span class="cov0" title="0">{
+                        return logging.GetContextFields(c)
+                }</span>,
+        })
+        <span class="cov0" title="0">r.Use(zapLoggerMiddleware)
+        r.Use(ginzap.RecoveryWithZap(l.Logger(), true))
+
+        registerRoutes(r, cfg.JWTKey, cfg.JWTLifeHours, s, a)
+
+        if err := r.RunWithContext(ctx); err != nil &amp;&amp; !errors.Is(err, context.Canceled) </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to run router: %v", err)
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+func registerRoutes(r gin.IRouter, jwtKey string, jwtLifeHours int16, s *store.Store, a orders.AccrualPusher) <span class="cov10" title="6">{
+        authService := service.NewAuth(&amp;service.AuthConfig{
+                Secret:   jwtKey,
+                LifeTime: time.Duration(jwtLifeHours) * time.Hour,
+        }, s)
+        r.POST("/api/user/login", auth.NewLoginHandler(authService))
+        r.POST("/api/user/register", auth.NewRegisterHandler(authService))
+
+        r.Group("/").
+                Use(middleware.UserAuthJWT([]byte(jwtKey), service.NewUserFinder(s))).
+                POST("/api/user/orders", orders.NewCreateHandler(service.NewOrderCreator(s), a)).
+                GET("/api/user/orders", orders.NewListHandler(service.NewOrderLister(s))).
+                GET("/api/user/balance", handlers.NewBalanceHandler(service.NewBalance(s))).
+                POST("/api/user/balance/withdraw", handlers.NewWithdrawHandler(service.NewWithdraw(s))).
+                GET("/api/user/withdrawals", handlers.NewWithdrawalsHandler(service.NewWithdrawals(s)))
+}</span>
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">package service
+
+import (
+        "context"
+        "database/sql"
+        "errors"
+        "fmt"
+        "time"
+
+        "github.com/golang-jwt/jwt/v5"
+        "github.com/jackc/pgerrcode"
+        "github.com/jackc/pgx/v5/pgconn"
+        "github.com/korobkovandrey/gmartloyalty/db/query"
+        "golang.org/x/crypto/bcrypt"
+)
+
+//go:generate mockgen -source=auth.go -destination=mocks/mock_userauthstore.go -package=mocks
+
+type UserAuthStore interface {
+        GetUserByLogin(context.Context, string) (query.User, error)
+        CreateUser(context.Context, query.CreateUserParams) (int64, error)
+}
+
+type AuthConfig struct {
+        Secret   string
+        LifeTime time.Duration
+}
+
+type Auth struct {
+        r   UserAuthStore
+        cfg *AuthConfig
+}
+
+func NewAuth(cfg *AuthConfig, r UserAuthStore) *Auth <span class="cov10" title="11">{
+        return &amp;Auth{r: r, cfg: cfg}
+}</span>
+
+func (s *Auth) Login(ctx context.Context, login, password string) (string, error) <span class="cov6" title="4">{
+        u, err := s.r.GetUserByLogin(ctx, login)
+        if err != nil </span><span class="cov3" title="2">{
+                if errors.Is(err, sql.ErrNoRows) </span><span class="cov1" title="1">{
+                        return "", fmt.Errorf("failed to get user: %w", ErrNotFound)
+                }</span>
+                <span class="cov1" title="1">return "", fmt.Errorf("failed to get user: %w", err)</span>
+        }
+        <span class="cov3" title="2">if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password)); err != nil </span><span class="cov1" title="1">{
+                return "", fmt.Errorf("failed to verify password: %w: %w", ErrNotFound, err)
+        }</span>
+        <span class="cov1" title="1">return s.sign(u.ID)</span>
+}
+
+func (s *Auth) Register(ctx context.Context, login, password string) (string, error) <span class="cov7" title="5">{
+        _, err := s.r.GetUserByLogin(ctx, login)
+        if err == nil </span><span class="cov1" title="1">{
+                return "", fmt.Errorf("login %w", ErrAlreadyExists)
+        }</span>
+        <span class="cov6" title="4">if !errors.Is(err, sql.ErrNoRows) </span><span class="cov1" title="1">{
+                return "", fmt.Errorf("failed to check login: %w", err)
+        }</span>
+        <span class="cov5" title="3">hash, err := makePasswordHash(password)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("failed to make password hash: %w", err)
+        }</span>
+        <span class="cov5" title="3">id, err := s.r.CreateUser(ctx, query.CreateUserParams{
+                Login:     login,
+                Password:  hash,
+                CreatedAt: time.Now().UTC(),
+        })
+        if err != nil </span><span class="cov3" title="2">{
+                var e *pgconn.PgError
+                if errors.As(err, &amp;e) &amp;&amp; pgerrcode.IsIntegrityConstraintViolation(e.Code) </span><span class="cov1" title="1">{
+                        return "", fmt.Errorf("login %w", ErrAlreadyExists)
+                }</span>
+                <span class="cov1" title="1">return "", fmt.Errorf("failed to create user: %w", err)</span>
+        }
+        <span class="cov1" title="1">return s.sign(id)</span>
+}
+
+func (s *Auth) sign(id int64) (string, error) <span class="cov6" title="4">{
+        claims := jwt.MapClaims{
+                "userID": id,
+        }
+        if s.cfg.LifeTime &gt; 0 </span><span class="cov5" title="3">{
+                claims["exp"] = time.Now().Add(s.cfg.LifeTime).Unix()
+        }</span>
+        <span class="cov6" title="4">token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+        t, err := token.SignedString([]byte(s.cfg.Secret))
+        if err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("failed to create signed token: %w", err)
+        }</span>
+        <span class="cov6" title="4">return "Bearer " + t, nil</span>
+}
+
+func makePasswordHash(password string) (string, error) <span class="cov7" title="6">{
+        bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+        if err != nil </span><span class="cov1" title="1">{
+                return "", fmt.Errorf("failed to hash password: %w", err)
+        }</span>
+        <span class="cov7" title="5">return string(bytes), err</span>
+}
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">package service
+
+import (
+        "context"
+        "fmt"
+)
+
+//go:generate mockgen -source=balance.go -destination=mocks/mock_balancestore.go -package=mocks
+
+type BalanceStore interface {
+        Accrual(ctx context.Context, userID int64) (float64, error)
+        Withdrawn(ctx context.Context, userID int64) (float64, error)
+}
+
+type Balance struct {
+        r BalanceStore
+}
+
+func NewBalance(r BalanceStore) *Balance <span class="cov10" title="4">{
+        return &amp;Balance{r: r}
+}</span>
+
+type BalanceResponse struct {
+        Current   float64 `json:"current"`
+        Withdrawn float64 `json:"withdrawn"`
+}
+
+func (s *Balance) Balance(ctx context.Context, userID int64) (*BalanceResponse, error) <span class="cov10" title="4">{
+        a, err := s.r.Accrual(ctx, userID)
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, fmt.Errorf("failed to get accrual: %w", err)
+        }</span>
+        <span class="cov8" title="3">w, err := s.r.Withdrawn(ctx, userID)
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, fmt.Errorf("failed to get withdrawn: %w", err)
+        }</span>
+        <span class="cov5" title="2">return &amp;BalanceResponse{
+                Current:   a - w,
+                Withdrawn: w,
+        }, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">package service
+
+import (
+        "context"
+        "database/sql"
+        "errors"
+        "fmt"
+        "time"
+
+        "github.com/korobkovandrey/gmartloyalty/db/query"
+)
+
+//go:generate mockgen -source=ordercreator.go -destination=mocks/mock_ordercreatestore.go -package=mocks
+
+type OrderCreateStore interface {
+        GetOrderByNumber(ctx context.Context, number string) (query.Order, error)
+        CreateOrder(ctx context.Context, arg query.CreateOrderParams) (int64, error)
+}
+
+type OrderCreator struct {
+        r OrderCreateStore
+}
+
+func NewOrderCreator(r OrderCreateStore) *OrderCreator <span class="cov10" title="5">{
+        return &amp;OrderCreator{r: r}
+}</span>
+
+func (s *OrderCreator) Push(ctx context.Context, userID int64, orderNumber string) error <span class="cov10" title="5">{
+        o, err := s.r.GetOrderByNumber(ctx, orderNumber)
+        if err == nil </span><span class="cov4" title="2">{
+                if o.UserID == userID </span><span class="cov1" title="1">{
+                        err = ErrAlreadyExistsSomeUser
+                }</span> else<span class="cov1" title="1"> {
+                        err = ErrAlreadyExists
+                }</span>
+                <span class="cov4" title="2">return fmt.Errorf("failed to create order: %w, orderNumber: %s, userID: %d", err, orderNumber, userID)</span>
+        }
+        <span class="cov7" title="3">if !errors.Is(err, sql.ErrNoRows) </span><span class="cov1" title="1">{
+                return fmt.Errorf("failed to check order: %w, orderNumber: %s, userID: %d", err, orderNumber, userID)
+        }</span>
+        <span class="cov4" title="2">_, err = s.r.CreateOrder(ctx, query.CreateOrderParams{
+                Number:     orderNumber,
+                UserID:     userID,
+                UploadedAt: time.Now().UTC(),
+        })
+        if err != nil </span><span class="cov1" title="1">{
+                return fmt.Errorf("failed to create order: %w, orderNumber: %s, userID: %d", err, orderNumber, userID)
+        }</span>
+        <span class="cov1" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file24" style="display: none">package service
+
+import (
+        "context"
+        "fmt"
+        "time"
+
+        "github.com/korobkovandrey/gmartloyalty/db/query"
+)
+
+//go:generate mockgen -source=orderlister.go -destination=mocks/mock_orderliststore.go -package=mocks
+
+type OrderListStore interface {
+        GetOrdersForUserID(ctx context.Context, userID int64) ([]query.Order, error)
+}
+
+type OrdersLister struct {
+        r OrderListStore
+}
+
+func NewOrderLister(r OrderListStore) *OrdersLister <span class="cov10" title="3">{
+        return &amp;OrdersLister{r: r}
+}</span>
+
+type OrderResponse struct {
+        Number     string             `json:"number"`
+        Status     query.TOrderStatus `json:"status"`
+        Accrual    float64            `json:"accrual,omitempty"`
+        UploadedAt time.Time          `json:"uploaded_at"`
+}
+
+func (s *OrdersLister) List(ctx context.Context, userID int64) ([]OrderResponse, error) <span class="cov10" title="3">{
+        l, err := s.r.GetOrdersForUserID(ctx, userID)
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, fmt.Errorf("failed to get orders: %w", err)
+        }</span>
+        <span class="cov6" title="2">result := make([]OrderResponse, len(l))
+        for i, o := range l </span><span class="cov6" title="2">{
+                result[i] = OrderResponse{
+                        Number:     o.Number,
+                        Status:     o.Status,
+                        Accrual:    o.Accrual,
+                        UploadedAt: o.UploadedAt,
+                }
+        }</span>
+        <span class="cov6" title="2">return result, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file25" style="display: none">package service
+
+import (
+        "context"
+        "database/sql"
+        "errors"
+        "fmt"
+
+        "github.com/korobkovandrey/gmartloyalty/db/query"
+)
+
+//go:generate mockgen -source=user.go -destination=mocks/mock_userfinderstore.go -package=mocks
+
+type UserFinderStore interface {
+        GetUserById(context.Context, int64) (query.User, error)
+}
+
+type UserFinder struct {
+        r UserFinderStore
+}
+
+func NewUserFinder(r UserFinderStore) *UserFinder <span class="cov10" title="3">{
+        return &amp;UserFinder{r: r}
+}</span>
+
+func (s *UserFinder) Find(ctx context.Context, id int64) (*query.User, error) <span class="cov10" title="3">{
+        u, err := s.r.GetUserById(ctx, id)
+        if err != nil </span><span class="cov6" title="2">{
+                if errors.Is(err, sql.ErrNoRows) </span><span class="cov1" title="1">{
+                        return nil, fmt.Errorf("failed to get user: %w", ErrNotFound)
+                }</span>
+                <span class="cov1" title="1">return nil, fmt.Errorf("failed to get user: %w", err)</span>
+        }
+        <span class="cov1" title="1">return &amp;u, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file26" style="display: none">package service
+
+import (
+        "context"
+        "fmt"
+        "time"
+
+        "github.com/korobkovandrey/gmartloyalty/db/query"
+)
+
+//go:generate mockgen -source=withdraw.go -destination=mocks/mock_withdrawstore.go -package=mocks
+
+type WithdrawStore interface {
+        Balance(ctx context.Context, userID int64) (float64, error)
+        CreateWithdraw(ctx context.Context, arg query.CreateWithdrawParams) (int64, error)
+}
+
+type Withdraw struct {
+        r WithdrawStore
+}
+
+func NewWithdraw(r WithdrawStore) *Withdraw <span class="cov10" title="4">{
+        return &amp;Withdraw{r: r}
+}</span>
+
+func (s *Withdraw) Create(ctx context.Context, userID int64, order string, sum float64) error <span class="cov10" title="4">{
+        b, err := s.r.Balance(ctx, userID)
+        if err != nil </span><span class="cov1" title="1">{
+                return fmt.Errorf("failed to get balance: %w", err)
+        }</span>
+        <span class="cov8" title="3">if sum &gt; b </span><span class="cov1" title="1">{
+                return ErrNotEnoughBalance
+        }</span>
+        <span class="cov5" title="2">_, err = s.r.CreateWithdraw(ctx, query.CreateWithdrawParams{
+                UserID:      userID,
+                Sum:         sum,
+                Order:       order,
+                ProcessedAt: time.Now().UTC(),
+        })
+        if err != nil </span><span class="cov1" title="1">{
+                return fmt.Errorf("failed to create withdraw: %w", err)
+        }</span>
+        <span class="cov1" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file27" style="display: none">package service
+
+import (
+        "context"
+        "fmt"
+        "time"
+
+        "github.com/korobkovandrey/gmartloyalty/db/query"
+)
+
+//go:generate mockgen -source=withdrawals.go -destination=mocks/mock_withdrawalsstore.go -package=mocks
+
+type WithdrawalsStore interface {
+        GetWithdrawalsForUserID(ctx context.Context, userID int64) ([]query.Withdrawal, error)
+}
+
+type Withdrawals struct {
+        r WithdrawalsStore
+}
+
+func NewWithdrawals(r WithdrawalsStore) *Withdrawals <span class="cov10" title="3">{
+        return &amp;Withdrawals{r: r}
+}</span>
+
+type WithdrawResponse struct {
+        Order       string    `json:"order"`
+        Sum         float64   `json:"sum"`
+        ProcessedAt time.Time `json:"processed_at"`
+}
+
+func (s *Withdrawals) List(ctx context.Context, userID int64) ([]WithdrawResponse, error) <span class="cov10" title="3">{
+        l, err := s.r.GetWithdrawalsForUserID(ctx, userID)
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, fmt.Errorf("failed to get withdrawals: %w", err)
+        }</span>
+        <span class="cov6" title="2">result := make([]WithdrawResponse, len(l))
+        for i, w := range l </span><span class="cov6" title="2">{
+                result[i] = WithdrawResponse{
+                        Order:       w.Order,
+                        Sum:         w.Sum,
+                        ProcessedAt: w.ProcessedAt,
+                }
+        }</span>
+        <span class="cov6" title="2">return result, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file28" style="display: none">package luhn
+
+import "strconv"
+
+func CheckString(s string) bool <span class="cov3" title="3">{
+        number, err := strconv.Atoi(s)
+        if err != nil </span><span class="cov1" title="1">{
+                return false
+        }</span>
+        <span class="cov2" title="2">return Check(number)</span>
+}
+
+func Check(number int) bool <span class="cov4" title="4">{
+        var sum int
+        for i := 0; number &gt; 0; i++ </span><span class="cov10" title="34">{
+                cur := number % 10
+                if i%2 == 0 </span><span class="cov8" title="18">{
+                        sum += cur
+                        number /= 10
+                        continue</span>
+                }
+                <span class="cov8" title="16">cur *= 2
+                //nolint:mnd // ignore
+                if cur &gt; 9 </span><span class="cov5" title="6">{
+                        cur -= 9
+                }</span>
+                <span class="cov8" title="16">sum += cur
+                number /= 10</span>
+        }
+        <span class="cov4" title="4">return sum%10 == 0</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

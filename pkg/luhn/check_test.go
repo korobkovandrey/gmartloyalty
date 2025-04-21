@@ -14,7 +14,7 @@ func TestCheck(t *testing.T) {
 	}{
 		{
 			name:     "valid number",
-			number:   1230,
+			number:   1345821735824,
 			expected: true,
 		},
 		{
@@ -40,7 +40,7 @@ func TestCheckString(t *testing.T) {
 	}{
 		{
 			name:     "valid number",
-			number:   "1230",
+			number:   "1345821735824",
 			expected: true,
 		},
 		{

@@ -13,7 +13,7 @@ import (
 
 type Store struct {
 	*query.Queries
-	db *sql.DB
+	DB *sql.DB
 }
 
 func NewStore(ctx context.Context, dsn string) (*Store, error) {
@@ -22,24 +22,24 @@ func NewStore(ctx context.Context, dsn string) (*Store, error) {
 	}
 	s := &Store{}
 	var err error
-	s.db, err = sql.Open("pgx", dsn)
+	s.DB, err = sql.Open("pgx", dsn)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
-	s.db.SetMaxOpenConns(5)
-	s.db.SetMaxIdleConns(5)
-	s.db.SetConnMaxIdleTime(time.Minute)
-	s.db.SetConnMaxLifetime(time.Minute)
-	err = s.db.PingContext(ctx)
+	s.DB.SetMaxOpenConns(5)
+	s.DB.SetMaxIdleConns(5)
+	s.DB.SetConnMaxIdleTime(time.Minute)
+	s.DB.SetConnMaxLifetime(time.Minute)
+	err = s.DB.PingContext(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
-	s.Queries = query.New(s.db)
+	s.Queries = query.New(s.DB)
 	return s, nil
 }
 
 func (s *Store) Close() error {
-	return s.db.Close()
+	return s.DB.Close()
 }
 
 func (s *Store) Balance(ctx context.Context, userID int64) (float64, error) {

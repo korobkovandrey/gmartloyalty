@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/korobkovandrey/gmartloyalty/internal/handlers/orders/mocks"
@@ -163,6 +164,7 @@ func TestCreate(t *testing.T) {
 			}
 			tt.mockSetup(mockOrderCreator, mockAccrualPusher)
 			NewCreateHandler(mockOrderCreator, mockAccrualPusher)(ctx)
+			time.Sleep(100 * time.Millisecond)
 			assert.Equal(t, tt.wantStatusCode, ctx.Writer.Status())
 		})
 	}

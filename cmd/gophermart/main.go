@@ -64,7 +64,7 @@ func main() {
 		a.PushOrder(o.Number)
 	}
 
-	if err := server.Launch(ctx, cfg, l, s, a); err != nil {
+	if err := server.Run(ctx, cfg, l, s, a); err != nil {
 		l.FatalCtx(ctx, fmt.Errorf("failed to launch server: %v", err).Error())
 	}
 }

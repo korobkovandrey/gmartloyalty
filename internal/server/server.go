@@ -20,7 +20,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func Launch(ctx context.Context, cfg *config.Config, l *logging.ZapLogger, s *store.Store, a orders.AccrualPusher) error {
+func Run(ctx context.Context, cfg *config.Config, l *logging.ZapLogger, s *store.Store, a orders.AccrualPusher) error {
 	r, err := graceful.New(gin.New(), graceful.WithAddr(cfg.RunAddress))
 	if err != nil {
 		return fmt.Errorf("failed to create router: %v", err)
@@ -37,23 +37,27 @@ func Launch(ctx context.Context, cfg *config.Config, l *logging.ZapLogger, s *st
 	r.Use(zapLoggerMiddleware)
 	r.Use(ginzap.RecoveryWithZap(l.Logger(), true))
 
-	authService := service.NewAuth(&service.AuthConfig{
-		Secret:   cfg.JWTKey,
-		LifeTime: time.Duration(cfg.JWTLifeHours) * time.Hour,
-	}, s)
-	r.POST("/api/user/login", auth.NewLoginHandler(authService))
-	r.POST("/api/user/register", auth.NewRegisterHandler(authService))
-
-	r.Group("/").
-		Use(middleware.UserAuthJWT([]byte(cfg.JWTKey), service.NewUserFinder(s))).
-		POST("/api/user/orders", orders.NewCreateHandler(service.NewOrderCreator(s), a)).
-		GET("/api/user/orders", orders.NewListHandler(service.NewOrderLister(s))).
-		GET("/api/user/balance", handlers.NewBalanceHandler(service.NewBalance(s))).
-		POST("/api/user/balance/withdraw", handlers.NewWithdrawHandler(service.NewWithdraw(s))).
-		GET("/api/user/withdrawals", handlers.NewWithdrawalsHandler(service.NewWithdrawals(s)))
+	registerRoutes(r, cfg.JWTKey, cfg.JWTLifeHours, s, a)
 
 	if err := r.RunWithContext(ctx); err != nil && !errors.Is(err, context.Canceled) {
 		return fmt.Errorf("failed to run router: %v", err)
 	}
 	return nil
+}
+
+func registerRoutes(r gin.IRouter, jwtKey string, jwtLifeHours int16, s *store.Store, a orders.AccrualPusher) {
+	authService := service.NewAuth(&service.AuthConfig{
+		Secret:   jwtKey,
+		LifeTime: time.Duration(jwtLifeHours) * time.Hour,
+	}, s)
+	r.POST("/api/user/login", auth.NewLoginHandler(authService))
+	r.POST("/api/user/register", auth.NewRegisterHandler(authService))
+
+	r.Group("/").
+		Use(middleware.UserAuthJWT([]byte(jwtKey), service.NewUserFinder(s))).
+		POST("/api/user/orders", orders.NewCreateHandler(service.NewOrderCreator(s), a)).
+		GET("/api/user/orders", orders.NewListHandler(service.NewOrderLister(s))).
+		GET("/api/user/balance", handlers.NewBalanceHandler(service.NewBalance(s))).
+		POST("/api/user/balance/withdraw", handlers.NewWithdrawHandler(service.NewWithdraw(s))).
+		GET("/api/user/withdrawals", handlers.NewWithdrawalsHandler(service.NewWithdrawals(s)))
 }
