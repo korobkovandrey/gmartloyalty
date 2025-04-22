@@ -18,6 +18,9 @@ import (
 )
 
 func TestAccrual(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
 	cfg := &Config{
 		AccrualSystemAddress: "",
 		JobsSize:             10,
@@ -29,45 +32,67 @@ func TestAccrual(t *testing.T) {
 	logger, err := logging.NewZapLogger(zapcore.FatalLevel, []string{"stderr"})
 	require.NoError(t, err)
 
-	t.Run("successful order processing - PROCESSED", func(t *testing.T) {
-		ctrl := gomock.NewController(t)
-		defer ctrl.Finish()
-		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			assert.Equal(t, "/api/orders/3228087", r.URL.Path)
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write([]byte(`{"order":"3228087","status":"PROCESSED","accrual":100.50}`))
-		}))
-		defer server.Close()
-		cfg.AccrualSystemAddress = server.URL
-		mockStore := mocks.NewMockorderStore(ctrl)
-		order := query.Order{
-			ID:     1,
-			Number: "3228087",
-			Status: query.TOrderStatusNEW,
-		}
-		ctx := context.TODO()
-		mockStore.EXPECT().GetOrderByNumber(ctx, gomock.Eq("3228087")).Return(order, nil)
-		mockStore.EXPECT().SetOrderStatus(ctx, gomock.Eq(query.SetOrderStatusParams{
-			ID:     1,
-			Status: query.TOrderStatusPROCESSING,
-		})).Return(nil)
-		mockStore.EXPECT().SetOrderStatusAndAccrual(ctx, gomock.Eq(query.SetOrderStatusAndAccrualParams{
-			ID:      1,
-			Status:  query.TOrderStatusPROCESSED,
-			Accrual: 100.50,
-		})).Return(nil)
-		accrual := NewAccrual(logger, mockStore, cfg)
-		accrual.Run(ctx)
-		accrual.PushOrder("3228087")
-		time.Sleep(time.Second)
-		accrual.Close()
-	})
+	tests := []struct {
+		name            string
+		orderID         int64
+		orderNum        string
+		accrualResponse string
+		wantAccrual     float64
+		wantOrderStatus query.TOrderStatus
+	}{
+		{
+			name:            "successful order processing - PROCESSED",
+			orderID:         1,
+			orderNum:        "3228087",
+			accrualResponse: `{"order":"3228087","status":"PROCESSED","accrual":100.50}`,
+			wantAccrual:     100.50,
+			wantOrderStatus: query.TOrderStatusPROCESSED,
+		},
+		{
+			name:            "successful order processing - INVALID",
+			orderID:         1,
+			orderNum:        "3228087",
+			accrualResponse: `{"order":"3228087","status":"INVALID"}`,
+			wantAccrual:     0,
+			wantOrderStatus: query.TOrderStatusINVALID,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				assert.Equal(t, "/api/orders/"+tt.orderNum, r.URL.Path)
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusOK)
+				_, _ = w.Write([]byte(tt.accrualResponse))
+			}))
+			defer server.Close()
+			cfg.AccrualSystemAddress = server.URL
+			mockStore := mocks.NewMockorderStore(ctrl)
+			order := query.Order{
+				ID:     tt.orderID,
+				Number: tt.orderNum,
+				Status: query.TOrderStatusNEW,
+			}
+			ctx := context.TODO()
+			mockStore.EXPECT().GetOrderByNumber(ctx, gomock.Eq("3228087")).Return(order, nil)
+			mockStore.EXPECT().SetOrderStatus(ctx, gomock.Eq(query.SetOrderStatusParams{
+				ID:     tt.orderID,
+				Status: query.TOrderStatusPROCESSING,
+			})).Return(nil)
+			mockStore.EXPECT().SetOrderStatusAndAccrual(ctx, gomock.Eq(query.SetOrderStatusAndAccrualParams{
+				ID:      tt.orderID,
+				Status:  tt.wantOrderStatus,
+				Accrual: tt.wantAccrual,
+			})).Return(nil)
+			accrual := NewAccrual(logger, mockStore, cfg)
+			accrual.Run(ctx)
+			accrual.PushOrder(tt.orderNum)
+			time.Sleep(time.Second)
+			accrual.Close()
+		})
+	}
 
 	t.Run("order already processed", func(t *testing.T) {
-		ctrl := gomock.NewController(t)
-		defer ctrl.Finish()
-
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			t.Fatal("HTTP server should not be called")
 		}))
@@ -89,10 +114,6 @@ func TestAccrual(t *testing.T) {
 	})
 
 	t.Run("getOrderToProcess error - no rows", func(t *testing.T) {
-		ctrl := gomock.NewController(t)
-		defer ctrl.Finish()
-
-		// Создаем тестовый HTTP-сервер (не должен вызываться)
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			t.Fatal("HTTP server should not be called")
 		}))

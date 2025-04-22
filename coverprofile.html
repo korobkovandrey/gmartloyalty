@@ -71,7 +71,7 @@
 				
 				<option value="file7">github.com/korobkovandrey/gmartloyalty/db/query/withdrawals.sql.go (84.2%)</option>
 				
-				<option value="file8">github.com/korobkovandrey/gmartloyalty/internal/accrual/accrual.go (60.3%)</option>
+				<option value="file8">github.com/korobkovandrey/gmartloyalty/internal/accrual/accrual.go (62.3%)</option>
 				
 				<option value="file9">github.com/korobkovandrey/gmartloyalty/internal/accrual/client.go (100.0%)</option>
 				
@@ -222,13 +222,13 @@ import (
 //go:embed migrations/*.sql
 var embedSQL embed.FS
 
-func Migrate(dsn string) error <span class="cov10" title="4">{
+func Migrate(dsn string) error <span class="cov10" title="6">{
         d, err := iofs.New(embedSQL, "migrations")
         if err != nil </span><span class="cov0" title="0">{
                 return fmt.Errorf("failed to return an iofs driver: %w", err)
         }</span>
-        <span class="cov10" title="4">m, err := migrate.NewWithSourceInstance("iofs", d, dsn)
-        if err != nil </span><span class="cov8" title="3">{
+        <span class="cov10" title="6">m, err := migrate.NewWithSourceInstance("iofs", d, dsn)
+        if err != nil </span><span class="cov9" title="5">{
                 return fmt.Errorf("failed to get a new migrate instance: %w", err)
         }</span>
 
@@ -740,7 +740,7 @@ type Accrual struct {
         wg          sync.WaitGroup
 }
 
-func NewAccrual(l *logging.ZapLogger, r orderStore, cfg *Config) *Accrual <span class="cov10" title="3">{
+func NewAccrual(l *logging.ZapLogger, r orderStore, cfg *Config) *Accrual <span class="cov10" title="4">{
         waitCh := make(chan struct{})
         close(waitCh)
         return &amp;Accrual{
@@ -754,30 +754,30 @@ func NewAccrual(l *logging.ZapLogger, r orderStore, cfg *Config) *Accrual <span 
         }
 }</span>
 
-func (s *Accrual) Run(ctx context.Context) <span class="cov10" title="3">{
+func (s *Accrual) Run(ctx context.Context) <span class="cov10" title="4">{
         s.wg.Add(s.cfg.NumWorkers + 1)
-        go func() </span><span class="cov10" title="3">{
+        go func() </span><span class="cov10" title="4">{
                 for j := range s.deferJobsCh </span><span class="cov0" title="0">{
                         if ctx.Err() != nil </span><span class="cov0" title="0">{
                                 break</span>
                         }
                         <span class="cov0" title="0">s.pushJob(j)</span>
                 }
-                <span class="cov10" title="3">s.wg.Done()</span>
+                <span class="cov10" title="4">s.wg.Done()</span>
         }()
-        <span class="cov10" title="3">for i := 0; i &lt; s.cfg.NumWorkers; i++ </span><span class="cov10" title="3">{
-                go func() </span><span class="cov10" title="3">{
+        <span class="cov10" title="4">for i := 0; i &lt; s.cfg.NumWorkers; i++ </span><span class="cov10" title="4">{
+                go func() </span><span class="cov10" title="4">{
                         s.worker(ctx)
                         s.wg.Done()
                 }</span>()
         }
 }
 
-func (s *Accrual) PushOrder(orderNum string) <span class="cov10" title="3">{
+func (s *Accrual) PushOrder(orderNum string) <span class="cov10" title="4">{
         s.pushJob(job{orderNum: orderNum})
 }</span>
 
-func (s *Accrual) pushJob(j job) <span class="cov10" title="3">{
+func (s *Accrual) pushJob(j job) <span class="cov10" title="4">{
         s.jobsCh &lt;- j
 }</span>
 
@@ -787,7 +787,7 @@ func (s *Accrual) pushDeferredJob(j job) <span class="cov0" title="0">{
         }</span>)
 }
 
-func (s *Accrual) getOrderToProcess(ctx context.Context, j job) (*query.Order, error) <span class="cov10" title="3">{
+func (s *Accrual) getOrderToProcess(ctx context.Context, j job) (*query.Order, error) <span class="cov10" title="4">{
         order, err := s.r.GetOrderByNumber(ctx, j.orderNum)
         if err != nil </span><span class="cov1" title="1">{
                 if !errors.Is(err, sql.ErrNoRows) </span><span class="cov0" title="0">{
@@ -795,7 +795,7 @@ func (s *Accrual) getOrderToProcess(ctx context.Context, j job) (*query.Order, e
                 }</span>
                 <span class="cov1" title="1">return nil, fmt.Errorf("failed to get order: %w", err)</span>
         }
-        <span class="cov6" title="2">if order.Status == query.TOrderStatusNEW </span><span class="cov1" title="1">{
+        <span class="cov8" title="3">if order.Status == query.TOrderStatusNEW </span><span class="cov5" title="2">{
                 if err := s.r.SetOrderStatus(ctx, query.SetOrderStatusParams{
                         ID:     order.ID,
                         Status: query.TOrderStatusPROCESSING,
@@ -806,22 +806,27 @@ func (s *Accrual) getOrderToProcess(ctx context.Context, j job) (*query.Order, e
         } else<span class="cov1" title="1"> if order.Status != query.TOrderStatusPROCESSING </span><span class="cov1" title="1">{
                 return nil, errors.New("order is already processed")
         }</span>
-        <span class="cov1" title="1">return &amp;order, nil</span>
+        <span class="cov5" title="2">return &amp;order, nil</span>
 }
 
-func (s *Accrual) worker(ctx context.Context) <span class="cov10" title="3">{
-        for j := range s.jobsCh </span><span class="cov10" title="3">{
+const (
+        orderStatusProcessed string = "PROCESSED"
+        orderStatusInvalid   string = "INVALID"
+)
+
+func (s *Accrual) worker(ctx context.Context) <span class="cov10" title="4">{
+        for j := range s.jobsCh </span><span class="cov10" title="4">{
                 s.waitRetry(ctx)
                 if ctx.Err() != nil </span><span class="cov0" title="0">{
                         break</span>
                 }
-                <span class="cov10" title="3">order, err := s.getOrderToProcess(ctx, j)
-                if err != nil </span><span class="cov6" title="2">{
+                <span class="cov10" title="4">order, err := s.getOrderToProcess(ctx, j)
+                if err != nil </span><span class="cov5" title="2">{
                         s.l.ErrorCtx(ctx, fmt.Errorf("failed to get order: %w", err).Error())
                         continue</span>
                 }
 
-                <span class="cov1" title="1">toCtx, toCancel := context.WithTimeout(ctx, 10*time.Second)
+                <span class="cov5" title="2">toCtx, toCancel := context.WithTimeout(ctx, 10*time.Second)
                 resp, err := s.c.getOrder(toCtx, order.Number)
                 toCancel()
                 if err != nil </span><span class="cov0" title="0">{
@@ -831,16 +836,23 @@ func (s *Accrual) worker(ctx context.Context) <span class="cov10" title="3">{
                         }
                 }</span>
 
-                <span class="cov1" title="1">if resp.Status == "" </span><span class="cov0" title="0">{
+                <span class="cov5" title="2">if resp.Status == "" </span><span class="cov0" title="0">{
                         j.attempt++
                 }</span>
-                <span class="cov1" title="1">if resp.RetryAfter &gt; 0 </span><span class="cov0" title="0">{
+                <span class="cov5" title="2">if resp.RetryAfter &gt; 0 </span><span class="cov0" title="0">{
                         s.startWaitRetry(ctx, resp.RetryAfter)
                 }</span>
-                <span class="cov1" title="1">if resp.Status == "PROCESSED" || resp.Status == "INVALID" </span><span class="cov1" title="1">{
+                <span class="cov5" title="2">var newOrderStatus query.TOrderStatus
+                switch resp.Status </span>{
+                case orderStatusProcessed:<span class="cov1" title="1">
+                        newOrderStatus = query.TOrderStatusPROCESSED</span>
+                case orderStatusInvalid:<span class="cov1" title="1">
+                        newOrderStatus = query.TOrderStatusINVALID</span>
+                }
+                <span class="cov5" title="2">if newOrderStatus != "" </span><span class="cov5" title="2">{
                         if err := s.r.SetOrderStatusAndAccrual(ctx, query.SetOrderStatusAndAccrualParams{
                                 ID:      order.ID,
-                                Status:  query.TOrderStatus(resp.Status),
+                                Status:  newOrderStatus,
                                 Accrual: resp.Accrual,
                         }); err != nil </span><span class="cov0" title="0">{
                                 s.l.ErrorCtx(ctx, fmt.Errorf("failed to set order status and accrual: %w", err).Error())
@@ -862,12 +874,12 @@ func (s *Accrual) worker(ctx context.Context) <span class="cov10" title="3">{
         }
 }
 
-func (s *Accrual) waitRetry(ctx context.Context) <span class="cov10" title="3">{
+func (s *Accrual) waitRetry(ctx context.Context) <span class="cov10" title="4">{
         s.waitMux.RLock()
         defer s.waitMux.RUnlock()
         select </span>{
         case &lt;-ctx.Done():<span class="cov0" title="0"></span>
-        case &lt;-s.waitCh:<span class="cov10" title="3"></span>
+        case &lt;-s.waitCh:<span class="cov10" title="4"></span>
         }
 }
 
@@ -888,7 +900,7 @@ func (s *Accrual) startWaitRetry(ctx context.Context, timeout int) <span class="
         }
 }
 
-func (s *Accrual) Close() <span class="cov10" title="3">{
+func (s *Accrual) Close() <span class="cov10" title="4">{
         close(s.deferJobsCh)
         close(s.jobsCh)
         s.c.close()
@@ -912,7 +924,7 @@ type client struct {
         *resty.Client
 }
 
-func newClient(baseURL string) *client <span class="cov10" title="6">{
+func newClient(baseURL string) *client <span class="cov10" title="7">{
         return &amp;client{resty.New().
                 SetBaseURL(baseURL).
                 SetRetryCount(3).
@@ -927,14 +939,14 @@ type orderResponse struct {
         RetryAfter int
 }
 
-func (c *client) getOrder(ctx context.Context, order string) (*orderResponse, error) <span class="cov7" title="4">{
+func (c *client) getOrder(ctx context.Context, order string) (*orderResponse, error) <span class="cov8" title="5">{
         result := &amp;orderResponse{}
         r, err := c.R().SetContext(ctx).
                 SetResult(result).Get("/api/orders/" + order)
         if err != nil </span><span class="cov1" title="1">{
                 return nil, fmt.Errorf("failed to get order: %w", err)
         }</span>
-        <span class="cov6" title="3">if r.StatusCode() == http.StatusTooManyRequests </span><span class="cov1" title="1">{
+        <span class="cov7" title="4">if r.StatusCode() == http.StatusTooManyRequests </span><span class="cov1" title="1">{
                 result.RetryAfter = 60
                 if ra := r.Header().Get("Retry-After"); ra != "" </span><span class="cov1" title="1">{
                         if raInt, err := strconv.Atoi(ra); err == nil </span><span class="cov1" title="1">{
@@ -942,10 +954,10 @@ func (c *client) getOrder(ctx context.Context, order string) (*orderResponse, er
                         }</span>
                 }
         }
-        <span class="cov6" title="3">return result, nil</span>
+        <span class="cov7" title="4">return result, nil</span>
 }
 
-func (c *client) close() <span class="cov10" title="6">{
+func (c *client) close() <span class="cov10" title="7">{
         _ = c.Client.Close()
 }</span>
 </pre>
@@ -1375,17 +1387,17 @@ type Store struct {
         DB *sql.DB
 }
 
-func NewStore(ctx context.Context, dsn string) (*Store, error) <span class="cov10" title="7">{
-        if err := db.Migrate(dsn); err != nil </span><span class="cov8" title="5">{
+func NewStore(ctx context.Context, dsn string) (*Store, error) <span class="cov10" title="10">{
+        if err := db.Migrate(dsn); err != nil </span><span class="cov9" title="8">{
                 return nil, fmt.Errorf("failed to migrate database: %w", err)
         }</span>
-        <span class="cov4" title="2">s := &amp;Store{}
+        <span class="cov3" title="2">s := &amp;Store{}
         var err error
         s.DB, err = sql.Open("pgx", dsn)
         if err != nil </span><span class="cov0" title="0">{
                 return nil, fmt.Errorf("failed to open database: %w", err)
         }</span>
-        <span class="cov4" title="2">s.DB.SetMaxOpenConns(5)
+        <span class="cov3" title="2">s.DB.SetMaxOpenConns(5)
         s.DB.SetMaxIdleConns(5)
         s.DB.SetConnMaxIdleTime(time.Minute)
         s.DB.SetConnMaxLifetime(time.Minute)
@@ -1393,20 +1405,20 @@ func NewStore(ctx context.Context, dsn string) (*Store, error) <span class="cov1
         if err != nil </span><span class="cov0" title="0">{
                 return nil, fmt.Errorf("failed to ping database: %w", err)
         }</span>
-        <span class="cov4" title="2">s.Queries = query.New(s.DB)
+        <span class="cov3" title="2">s.Queries = query.New(s.DB)
         return s, nil</span>
 }
 
-func (s *Store) Close() error <span class="cov4" title="2">{
+func (s *Store) Close() error <span class="cov3" title="2">{
         return s.DB.Close()
 }</span>
 
-func (s *Store) Balance(ctx context.Context, userID int64) (float64, error) <span class="cov6" title="3">{
+func (s *Store) Balance(ctx context.Context, userID int64) (float64, error) <span class="cov5" title="3">{
         a, err := s.Accrual(ctx, userID)
         if err != nil </span><span class="cov1" title="1">{
                 return 0, fmt.Errorf("failed to get accrual: %w", err)
         }</span>
-        <span class="cov4" title="2">w, err := s.Withdrawn(ctx, userID)
+        <span class="cov3" title="2">w, err := s.Withdrawn(ctx, userID)
         if err != nil </span><span class="cov1" title="1">{
                 return 0, fmt.Errorf("failed to get withdrawn: %w", err)
         }</span>

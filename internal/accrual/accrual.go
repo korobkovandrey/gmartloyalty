@@ -115,6 +115,11 @@ func (s *Accrual) getOrderToProcess(ctx context.Context, j job) (*query.Order, e
 	return &order, nil
 }
 
+const (
+	orderStatusProcessed string = "PROCESSED"
+	orderStatusInvalid   string = "INVALID"
+)
+
 func (s *Accrual) worker(ctx context.Context) {
 	for j := range s.jobsCh {
 		s.waitRetry(ctx)
@@ -143,10 +148,17 @@ func (s *Accrual) worker(ctx context.Context) {
 		if resp.RetryAfter > 0 {
 			s.startWaitRetry(ctx, resp.RetryAfter)
 		}
-		if resp.Status == "PROCESSED" || resp.Status == "INVALID" {
+		var newOrderStatus query.TOrderStatus
+		switch resp.Status {
+		case orderStatusProcessed:
+			newOrderStatus = query.TOrderStatusPROCESSED
+		case orderStatusInvalid:
+			newOrderStatus = query.TOrderStatusINVALID
+		}
+		if newOrderStatus != "" {
 			if err := s.r.SetOrderStatusAndAccrual(ctx, query.SetOrderStatusAndAccrualParams{
 				ID:      order.ID,
-				Status:  query.TOrderStatus(resp.Status),
+				Status:  newOrderStatus,
 				Accrual: resp.Accrual,
 			}); err != nil {
 				s.l.ErrorCtx(ctx, fmt.Errorf("failed to set order status and accrual: %w", err).Error())
